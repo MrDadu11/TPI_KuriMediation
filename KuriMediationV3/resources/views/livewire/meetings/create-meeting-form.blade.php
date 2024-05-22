@@ -34,11 +34,17 @@ new class extends Component
 }; ?>
 
 <div>
+    {{-- Button that  --}}
     <button wire:click="toggleForm" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
         +
     </button>
     @if ($showForm)
-    <section class="absolute top-56 px-80 py-10 -left-4 bg-white rounded-lg border shadow-lg">
+    {{-- Background color --}}
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+        <section class="p-24 sm:py-16 sm:px-20 bg-white rounded-lg border shadow-lg">
+            <button wire:click="toggleForm" class="text-blue-800 font-extrabold text-lg hover:text-black transition ease-in-out duration-300 mb-2 underline">
+                Retour
+            </button>
         <header>
             <h2 class="text-lg font-medium text-black ">
                 {{ __('Ajouter une nouvel entretien') }}
@@ -49,12 +55,12 @@ new class extends Component
             </p>
         </header>
     
-        <form action="{{ route('meeting.store') }}" class="mt-6 space-y-6" method="POST">
+        <form action="{{ route('meeting.store') }}" class="mt-2 space-y-4" method="POST">
             @csrf
             {{-- Type --}}
-            <div>
+            <div class="flex flex-col">
                 <x-input-label for="type_id" :value="__('Type d\'intervention')" />
-                <select name="type_id" id="type_id" class="rounded-lg border border-gray-300">
+                <select name="type_id" id="type_id" class="rounded-lg border border-gray-300" required>
                     @foreach ($this->types as $type)
                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
@@ -62,27 +68,27 @@ new class extends Component
                 <x-input-error class="mt-2" :messages="$errors->get('type')" />
             </div>
             {{-- Name --}}
-            <div>
-                <x-input-label for="name" :value="__('Titre de l\'entretien')" />
-                <input type="text" class="rounded-lg border-gray-300" id="name" name="name">
+            <div class="flex flex-col">
+                <x-input-label for="name" :value="__('Titre de l\'entretien')"/>
+                <x-text-input type="text" id="name" name="name"/>
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
             {{-- Description --}}
-            <div>
+            <div class="flex flex-col">
                 <x-input-label for="description" :value="__('Description')" />
-                <input type="text" class="rounded-lg border-gray-300" id="description" name="description">
+                <textarea class="rounded-lg border-gray-300 resize-none h-24" id="description" name="description" required></textarea>
                 <x-input-error class="mt-2" :messages="$errors->get('description')" />
             </div>
             {{-- Date --}}
             <div class="flex flex-col">
                 <x-input-label for="schedule" :value="__('Date')" />
-                <input type="date" class="rounded-lg border-gray-300" id="schedule" name="schedule">
+                <x-text-input type="date" id="schedule" name="schedule"/>
                 <x-input-error class="mt-2" :messages="$errors->get('schedule')" />
             </div>
             {{-- Visitor/s --}}
             <div class="flex flex-col">
                 <x-input-label for="visitor" :value="__('Nom des intervenants')" />
-                <input type="text" class="rounded-lg border-gray-300" id="visitor" name="visitor">
+                <textarea class="rounded-lg border-gray-300 resize-none h-24" id="visitor" name="visitor" required></textarea>
                 <x-input-error class="mt-2" :messages="$errors->get('visitor')" />
             </div>
 
@@ -92,5 +98,6 @@ new class extends Component
             </div>
         </form>
     </section>
+    </div>
     @endif
 </div>

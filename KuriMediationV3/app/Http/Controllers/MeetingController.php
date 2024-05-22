@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Meeting;
 use App\Models\Type;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +35,7 @@ class MeetingController extends Controller
                 'currentUser' => Auth::user(),
                 'userMeetings' => $this->getUserAllMeetings($year),
                 'timeSpent' => $this->countUserTimespent($year),
+                'upcomingMeetings' => $this->countUpcomingMeetings($year),
                 'types' => $types,
                 'years' => $years,
                 'months' => $months,
@@ -77,7 +79,7 @@ class MeetingController extends Controller
             'visitor' => 'required|string|max:255',
         ]);
 
-        // Insert the validated data
+        // Inserts the validated data and creates the meeting
         Meeting::create([
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
@@ -139,6 +141,9 @@ class MeetingController extends Controller
         return redirect()->route('meeting.index');
     }
 
+
+
+
     // Function that returns the total amount of meetings the user has for the chosen year
     public function countUserAllMeetings($year){
         $total = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
@@ -155,9 +160,22 @@ class MeetingController extends Controller
         return $total;
     }
 
+    // Function that calcultates the number of meetings upcoming based on the current date
+    public function countUpcomingMeetings($year){
+        $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
+        // dd($meetings);
+        $count = 0;
+        foreach($meetings as $meeting){
+            if($meeting->schedule > today()){
+                $count++;
+            }
+        }
+        return $count;
+    }
+
     // Function that retrieves all meetings the user has for the chosen year
     public function getUserAllMeetings($year){
-        // Gets all user meetings
+        // Gets all user meetings based on the year
         for($i = 0; $i < 12; $i++){
             $userMeetings[$i] = Meeting::where('user_id', Auth::id())
             ->whereYear('schedule', $year)

@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{-- Icons for edit and delete --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @vite('resources/css/app.css')
     <title>Accueil</title>
-    <style>
-    .active-link {
-        border: 2px solid black;
-    }
-    </style>
     @livewireStyles
 </head>
 <body>
     <x-app-layout>
-        <div class="sm:py-12">
-            <div class="bg-white shadow-lt border sm:mt-2 max-w-7xl mx-auto px-4 py-2 sm:px-5 lg:px-7 rounded-xl">
+            <div class="bg-white shadow-lt border sm:mt-10 max-w-7xl mx-auto px-4 py-2 sm:px-5 lg:px-7 rounded-xl">
                 <div class="p-3 sm:p-6">
                     <section>
                         <div class="flex mb-2">
@@ -30,18 +25,18 @@
                             </select>
                         </div>
                         {{-- Meetings Stats --}}
-                        <div class="flex flex-col sm:flex-row justify-between">
-                            <div class="p-5 my-2 sm:mr-4 sm:my-0 bg-white border border-gray-300 shadow-lg rounded-md w-full">
+                        <div class="flex flex-col sm:flex-row justify-between space-y-2 sm:space-y-0">
+                            <div class="p-5 sm:mr-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
                                 <h1 class="font-bold text-xl text-blue-800">Nombre d'entretiens au total</h1>
                                 <span class="font-semibold text-5xl">{{ $meetingsTotal }}</span>
                             </div>
-                            <div class="p-5 my-2 sm:mx-4 sm:my-0 bg-white border border-gray-300 shadow-lg rounded-md w-full">
+                            <div class="p-5 sm:mx-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
                                 <h1 class="font-bold text-xl text-blue-800">Temps passés durant l'année</h1>
                                 <span class="font-semibold text-5xl">{{ $timeSpent }}</span>
                             </div>
-                            <div class="p-5 my-2 sm:ml-4 sm:my-0 bg-white border border-gray-300 shadow-lg rounded-md w-full">
+                            <div class="p-5 sm:ml-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
                                 <h1 class="font-bold text-xl text-blue-800">Entretiens à venir</h1>
-                                <span class="font-semibold text-5xl">{{ $meetingsTotal }}</span>
+                                <span class="font-semibold text-5xl">{{ $upcomingMeetings }}</span>
                             </div>
                         </div>
 
@@ -69,21 +64,24 @@
                                             <option value="orderByAlphabeticReverse">Ordre alphabétique inversé</option>
                                         </select>
                                     </div>
-                                    <livewire:pages.meetings.create-meeting-form/>
+                                    <livewire:meetings.create-meeting-form/>
                                 </div>
                             </div>
                             <ul>
                                 @if ($userMeetings)
                                     @for ($i = 0; $i < 12; $i++)
                                     <ul>
-                                        <li class="px-2 py-2 border-b shadow-sm rounded-lg border-gray-300"><?=$months[$i]?></li>
+                                        <li class="px-2 py-2 border-b shadow-sm rounded-lg border-gray-300 font-extrabold"><?=$months[$i]?></li>
                                         @foreach ($userMeetings[$i] as $meeting)
                                         <li class="flex justify-between px-4 py-2 border-b rounded-sm text-gray-500">
-                                            <div>Nom: {{ $meeting->name }}</div>
-                                            <div>Intervenants: {{$meeting->visitor }}</div>
-                                            <div class="flex">
-                                                <div class="mx-1"><a href="{{ route('meeting.edit', $meeting->id) }}"><i class="fa fa-edit"></i></a></div>
-                                                <div class="mx-1"><a href="{{ route('meeting.destroy', $meeting->id) }}"><i class="fa fa-trash"></i></a></div>
+                                            <div class="flex flex-col sm:block sm:space-x-8">
+                                                <span>Nom: {{ $meeting->name }}</span>
+                                                <span>Intervenants: {{ $meeting->visitor }}</span>
+                                                <span>Description: {{ $meeting->description }}</span>
+                                            </div>
+                                            <div class="flex space-x-2 items-center">
+                                                <span><a href="{{ route('meeting.edit', $meeting->id) }}"><i class="fa fa-edit fa-lg" ></i></a></span>
+                                                <span><a href="{{ route('meeting.destroy', $meeting->id) }}"><i class="fa fa-trash fa-lg"></i></a></span>
                                             </div>
                                         </li>
                                         @endforeach                            
@@ -97,7 +95,6 @@
                     </section>
                 </div>
             </div>
-        </div>
     </x-app-layout>
     @livewireScripts
 </body>

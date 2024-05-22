@@ -36,7 +36,7 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden sm:my-px sm:ms-10 sm:flex bg-gray-100">
-                    <x-nav-link :href="route('meeting.index')" :active="request()->routeIs('meeting.index')" wire:navigate>
+                    <x-nav-link class="rounded-se-none rounded-ee-none" :href="route('meeting.index')" :active="request()->routeIs('meeting.index')" wire:navigate>
                         {{ __('Accueil') }}
                     </x-nav-link>
                     {{-- <x-nav-link :href="route('graphics.index', ['year' => $currentYear])" :active="request()->routeIs('graphics.index', ['year' => $currentYear])" wire:navigate>
@@ -45,9 +45,17 @@ new class extends Component
                     {{-- <x-nav-link :href="route('budgets.index')" :active="request()->routeIs('budgets.index')" wire:navigate>
                         {{ __('Modifier mon Budget') }}
                     </x-nav-link> --}}
-                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                    <x-nav-link class="rounded-ss-none rounded-es-none" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
                         {{ __('A Propos') }}
                     </x-nav-link>
+                    @if (Auth::user()->isAdmin == 1)
+                        <x-nav-link class="bg-gray-200 rounded-se-none rounded-ee-none" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                            {{ __('Utilisateurs') }}
+                        </x-nav-link>
+                        <x-nav-link class="bg-gray-200 rounded-ss-none rounded-es-none" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                            {{ __('Types') }}
+                        </x-nav-link>                     
+                    @endif
                 </div>
             </div>            
             
@@ -100,6 +108,14 @@ new class extends Component
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
                 {{ __('A Propos') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->isAdmin == 1)
+            <x-responsive-nav-link class="bg-gray-200 text-blue-800 font-bold" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                {{ __('Utilisateurs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link class="bg-gray-200 text-blue-800 font-bold" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                {{ __('Types') }}
+            </x-responsive-nav-link>                     
+        @endif
         </div>
 
         <!-- Responsive Settings Options -->
