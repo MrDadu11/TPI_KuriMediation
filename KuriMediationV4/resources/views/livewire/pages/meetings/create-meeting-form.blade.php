@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -9,11 +8,6 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
-    // public string $name = '';
-    // public string $decision = '';
-    // public string $description = '';
-    // public string $duration = '';
-    // public string $visitor = '';
 
     public $showForm = false;
     public $types;
@@ -35,7 +29,7 @@ new class extends Component
 
 <div>
     {{-- Button that  --}}
-    <button wire:click="toggleForm" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
+    <button wire:click.prevent="toggleForm" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
         +
     </button>
     @if ($showForm)
@@ -65,7 +59,7 @@ new class extends Component
                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
                 </select>
-                <x-input-error class="mt-2" :messages="$errors->get('type')" />
+                <x-input-error class="mt-2" :messages="$errors->get('type_id')" />
             </div>
             {{-- Name --}}
             <div class="flex flex-col">

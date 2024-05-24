@@ -20,5 +20,6 @@ class Aftercare extends Model
         'description',
         'schedule',
         'visitor',
+        'meeting_id'
     ];
 }

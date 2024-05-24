@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AftercareController;
 use App\Http\Controllers\MeetingController;
+use App\Models\Aftercare;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +51,13 @@ Route::get('/meeting/edit/{id}', [MeetingController::class, 'edit'])->name('meet
 Route::get('/meeting/destroy/{id}', [MeetingController::class, 'destroy'])->name('meeting.destroy')->middleware(['auth']);
 // Route for updating the meeting's informations
 Route::put('/meeting/update/{meetingId?}', [MeetingController::class, 'update'])->name('meeting.update')->middleware(['auth']);
+
+
+Route::get('/aftercare/create/{meetingId?}', [AftercareController::class, 'show'])->name('aftercare.show')->middleware(['auth']);
+Route::post('/aftercare/store/{meetingId?}', [AftercareController::class, 'store'])->name('aftercare.store')->middleware(['auth']);
+Route::put('/aftercare/update/{aftercareId}', [AftercareController::class, 'update'])->name('aftercare.update')->middleware(['auth']);
+Route::get('/aftercare/destroy/{aftercareId}', [AftercareController::class, 'destroy'])->name('aftercare.destroy')->middleware(['auth']);
+Route::get('/aftercare/edit/{aftercareId}', [AftercareController::class, 'edit'])->name('aftercare.edit')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
 

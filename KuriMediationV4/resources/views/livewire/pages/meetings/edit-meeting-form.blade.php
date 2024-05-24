@@ -52,10 +52,9 @@
                     </div>
                     <div class="w-full xl:w-3/5 flex flex-col">
                         <ul class="rounded-lg border py-4 flex flex-col items-center w-full">
+                            <li class="border text-blue-800 font-bold rounded-md px-1">Documents</li>
                             @for ($i = 0; $i < 3; $i++)
-                                <li class="text-blue-800">
-                                    - File {{ $i }}
-                                </li>
+
                             @endfor
                             <input type="file" wire:model="file" id="file" class="w-full" />
                         </ul>

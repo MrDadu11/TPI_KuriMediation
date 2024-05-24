@@ -23,6 +23,8 @@ class EditMeetingForm extends Component
         $this->currentMeetingType = $currentMeetingType;
     }
 
+    
+
     public function render()
     {
         return view('livewire.pages.meetings.edit-meeting-form');

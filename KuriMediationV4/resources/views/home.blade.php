@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="md:max-h-96 overflow-auto">
-                                @if ($userMeetings)
+                                @if ($userMeetings !== 0)
                                     @for ($i = 0; $i < 12; $i++)
                                     <ul>
                                         <li class="px-2 py-2 border-b shadow-sm rounded-lg border-gray-300 font-extrabold"><?=$months[$i]?></li>

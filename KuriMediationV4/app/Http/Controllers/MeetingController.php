@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Meeting;
 use App\Models\Type;
+use App\Models\Aftercare;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,8 +51,10 @@ class MeetingController extends Controller
             ->orderBy('year', 'asc')
             ->first()->year;
             
+            
+            
             return redirect()->route('meeting.index', $year);
-
+            
         }
         // Displaying if there are no meetings in the database
         else{
@@ -61,6 +64,7 @@ class MeetingController extends Controller
                 'months' => $months,
                 'meetingsTotal' => 0,
                 'userMeetings' => 0,
+                'upcomingMeetings' => 0,
                 'timeSpent' => 0,
                 'currentUser' => Auth::user(),
             ]);
@@ -104,7 +108,9 @@ class MeetingController extends Controller
         $types = Type::all();
         
         // Array of months
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];       
+        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        
+        $aftercares = Aftercare::where('meeting_id', $meetingId)->get();
         
         $year = Meeting::selectRaw('extract(year FROM schedule) AS year')
         ->where('id', $meetingId)
@@ -121,17 +127,18 @@ class MeetingController extends Controller
 
         // Gets the current meeting being edited
         $currentMeeting = Meeting::where('id', $meetingId)->first();
+        // dd($currentMeeting, $meetingId);
         // Gets the type name of the meeting
-        $currentMeetingType = Type::where('id', $currentMeeting->type_id)->first()->name;
+        $currentMeetingType = Type::where('id', $meetingId)->first()->name;
             
             return view('edit-meeting', [
-                'currentUser' => Auth::user(),
                 'types' => $types,
                 'years' => $years,
                 'months' => $months,
                 'currentYear' => $year,
                 'currentMeeting' => $currentMeeting,
                 'currentMeetingType' => $currentMeetingType,
+                'userAftercares' => $aftercares,
             ]);
     }
 
