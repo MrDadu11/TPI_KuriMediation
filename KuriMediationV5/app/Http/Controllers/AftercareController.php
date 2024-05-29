@@ -16,7 +16,7 @@ class AftercareController extends Controller
         $meeting = Meeting::where('id', $meetingId)->first();
 
 
-        return view('add-aftercare', [
+        return view('add_aftercare', [
             'currentMeeting' => $meeting
         ]);
     }
@@ -27,22 +27,23 @@ class AftercareController extends Controller
         // dd($request, $meetingId);
         // Validates the data
         $validatedData = $request->validate([
-            'aftDescription' => 'required|string|max:255',
-            'aftSchedule' => 'required|date',
-            'aftDuration' => 'required|integer',
-            'aftDecision' => 'required|string|max:255',
-            'aftVisitor' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'schedule' => 'required|date',
+            'duration' => 'required|integer',
+            'decision' => 'required|string|max:255',
+            'visitor' => 'required|string|max:255',
         ]);
+
 
         // dd($validatedData);
 
         // Inserts the validated data and creates the aftercare
         Aftercare::create([
-            'description' => $validatedData['aftDescription'],
-            'schedule' => $validatedData['aftSchedule'],
-            'visitor' => $validatedData['aftVisitor'],
-            'duration' => $validatedData['aftDuration'],
-            'decision' => $validatedData['aftDecision'],
+            'description' => $validatedData['description'],
+            'schedule' => $validatedData['schedule'],
+            'visitor' => $validatedData['visitor'],
+            'duration' => $validatedData['duration'],
+            'decision' => $validatedData['decision'],
             'meeting_id' => $meetingId,
             'created_at' => now(),
             'updated_at' => now(),
@@ -56,7 +57,7 @@ class AftercareController extends Controller
 
             $currentAftercare = Aftercare::where('id', $aftercareId)->first();
             $currentMeeting = Meeting::where('id', $currentAftercare->meeting_id)->first();
-            return view('edit-aftercare',[
+            return view('edit_aftercare',[
                 'currentAftercare' => $currentAftercare,
                 'currentMeeting' => $currentMeeting,
             ]);
@@ -81,7 +82,7 @@ class AftercareController extends Controller
             
 
             // Redirects to the homepage
-            return redirect()->route('meeting.edit', $currentMeeting->id)->with('Mis à jour!!');
+            return redirect()->route('meeting.edit', $currentMeeting->id);
     }
 
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Livewire\Livewire;
 
+// Routes for non-authenticated users
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         if (Auth::check()) {
@@ -18,45 +19,47 @@ Route::middleware(['guest'])->group(function () {
         }
     });
 
+    // Route for the login page
     Route::get('/login', function () {
         return view('livewire.pages.auth.login');
     })->name('login');
 
 });
 
-Route::get('/graphics/{year?}', [GraphicController::class, 'index'])->name('graphic.index')->middleware(['auth']);
+// Routes for authenticated users
+Route::middleware(['auth'])->group(function() {
 
-
-// Route for displaying the homepage WITHOUT existing meetings
-Route::get('/home', [MeetingController::class, 'index'])->name('meeting.index')->middleware(['auth']);
-// Route for displaying the homepage WITH existing meetings 
-Route::get('/home/{year?}', [MeetingController::class, 'index'])->name('meeting.index')->middleware(['auth']);
-
-// Default route for the user profile's page
+// Default route for the user profile's page by Breeze
 Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+->middleware(['auth'])
+->name('profile');
 
 // Route for displaying the "about" page
 Route::view('about', 'about')
-    ->middleware(['auth'])
-    ->name('about');
+->middleware(['auth'])
+->name('about');
 
-// Route for storing meetings's data into the Database
-Route::post('/meeting/store', [MeetingController::class, 'store'])->name('meeting.store')->middleware(['auth']);
-// Route for displaying the meeting's information page
-Route::get('/meeting/edit/{id}', [MeetingController::class, 'edit'])->name('meeting.edit')->middleware(['auth']);
-// Route for deleting a meeting
-Route::get('/meeting/destroy/{id}', [MeetingController::class, 'destroy'])->name('meeting.destroy')->middleware(['auth']);
-// Route for updating the meeting's informations
+// Route for displaying the homepage WITHOUT/WITH existing meetings
+Route::get('/home', [MeetingController::class, 'index'])->name('meeting.index')->middleware(['auth']);
+Route::get('/home/{year?}', [MeetingController::class, 'index'])->name('meeting.index')->middleware(['auth']);
+
+
+// Routes for meetings resource and update and destroy methods
 Route::put('/meeting/update/{meetingId?}', [MeetingController::class, 'update'])->name('meeting.update')->middleware(['auth']);
+Route::get('/meeting/destroy/{id}', [MeetingController::class, 'destroy'])->name('meeting.destroy')->middleware(['auth']);
+Route::resource('meeting', MeetingController::class)->except('index', 'update', 'destroy');
 
-
-Route::get('/aftercare/create/{meetingId?}', [AftercareController::class, 'show'])->name('aftercare.show')->middleware(['auth']);
-Route::post('/aftercare/store/{meetingId?}', [AftercareController::class, 'store'])->name('aftercare.store')->middleware(['auth']);
-Route::put('/aftercare/update/{aftercareId}', [AftercareController::class, 'update'])->name('aftercare.update')->middleware(['auth']);
+// Routes for aftercare resource and store, destroy methods
+Route::post('/aftercare/store/{meetingId}', [AftercareController::class, 'store'])->name('aftercare.store')->middleware(['auth']);
 Route::get('/aftercare/destroy/{aftercareId}', [AftercareController::class, 'destroy'])->name('aftercare.destroy')->middleware(['auth']);
-Route::get('/aftercare/edit/{aftercareId}', [AftercareController::class, 'edit'])->name('aftercare.edit')->middleware(['auth']);
+Route::resource('aftercare', AftercareController::class)->except('store', 'destroy');
+
+// Route that shows the graphics page
+Route::get('/graphics/{year?}', [GraphicController::class, 'index'])->name('graphic.index')->middleware(['auth']);
+
+});
+
+
 
 require __DIR__.'/auth.php';
 

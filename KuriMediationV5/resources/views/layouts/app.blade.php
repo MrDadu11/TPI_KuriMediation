@@ -27,7 +27,7 @@
                 {{ $slot }}
             </main>
         </div>
-        <footer class="bg-black shadow border flex justify-center text-white py-2 text-sm md:text-base">
+        <footer class="bg-black shadow border flex justify-center text-white py-2 text-sm md:text-base print-hide">
             {{ __('© 2024 CHRIS NOAH MATTHEW SUBOONSAN - ETML') }}
         </footer>
     </body>

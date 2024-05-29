@@ -13,7 +13,7 @@
     <x-app-layout>
         <div class="bg-white shadow-lt border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
             <section>
-                <form action="{{ route('aftercare.update', ['aftercareId' => $currentAftercare->id ]) }}" method="POST">
+                <form action="{{ route('aftercare.update', $currentAftercare->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 

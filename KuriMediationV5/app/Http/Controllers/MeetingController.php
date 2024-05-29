@@ -74,7 +74,6 @@ class MeetingController extends Controller
 
     // Function that creates a new meeting with its parameters
     public function store(Request $request){
-
         // Validates the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -131,7 +130,7 @@ class MeetingController extends Controller
         // Gets the type name of the meeting
         $currentMeetingType = Type::where('id', $meetingId)->first()->name;
             
-            return view('edit-meeting', [
+            return view('edit_meeting', [
                 'types' => $types,
                 'years' => $years,
                 'months' => $months,
@@ -168,8 +167,6 @@ class MeetingController extends Controller
         Meeting::where('id', $meetingId)->delete();
         return redirect()->route('meeting.index');
     }
-
-
 
 
     // Function that returns the total amount of meetings the user has for the chosen year

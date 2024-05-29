@@ -2,9 +2,9 @@
 
 namespace App\Charts;
 
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use ConsoleTVs\Charts\Classes\Highcharts\Chart;
 
-class Graphics extends Chart
+class ChartsHC extends Chart
 {
     /**
      * Initializes the chart.

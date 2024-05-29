@@ -29,35 +29,35 @@
                     <div class="flex flex-col xl:flex-row xl:justify-between">
                         {{-- Date --}}
                         <div>
-                            <x-input-label for="aftSchedule" :value="__('Date')" />
-                            <x-text-input type="date" id="aftSchedule" name="aftSchedule"/>
-                            <x-input-error class="mt-2" :messages="$errors->get('aftSchedule')" />
+                            <x-input-label for="schedule" :value="__('Date')" />
+                            <x-text-input type="date" id="schedule" name="schedule"/>
+                            <x-input-error class="mt-2" :messages="$errors->get('schedule')" />
                         </div>
         
                         {{-- Duration --}}
                         <div class="flex flex-col justify-end xl:w-1/2">
-                            <x-input-label for="aftDuration" :value="__('Durée')" class="w-full"/>
-                            <x-text-input type="number" id="aftDuration" name="aftDuration" class="w-full"/>
-                            <x-input-error class="mt-2" :messages="$errors->get('aftDuration')" />
+                            <x-input-label for="duration" :value="__('Durée')" class="w-full"/>
+                            <x-text-input type="number" id="duration" name="duration" class="w-full"/>
+                            <x-input-error class="mt-2" :messages="$errors->get('duration')" />
                         </div>
                     </div>
                     {{-- Visitor/s --}}
                     <div class="flex flex-col">
-                        <x-input-label for="aftVisitor" :value="__('Nom des intervenants')" />
-                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="aftVisitor" name="aftVisitor" required></textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('aftVisitor')" />
+                        <x-input-label for="visitor" :value="__('Nom des intervenants')" />
+                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="visitor" name="visitor" required></textarea>
+                        <x-input-error class="mt-2" :messages="$errors->get('visitor')" />
                     </div>
                     {{-- Description --}}
                     <div class="flex flex-col">
-                        <x-input-label for="aftDescription" :value="__('Description')" />
-                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="aftDescription" name="aftDescription" required></textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('aftDescription')" />
+                        <x-input-label for="description" :value="__('Description')" />
+                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="description" name="description" required></textarea>
+                        <x-input-error class="mt-2" :messages="$errors->get('description')" />
                     </div>
                     {{-- Decision --}}
                     <div class="flex flex-col">
-                        <x-input-label for="aftDecision" :value="__('Decision')" />
-                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="aftDecision" name="aftDecision" required></textarea>
-                        <x-input-error class="mt-2" :messages="$errors->get('aftDecision')" />
+                        <x-input-label for="decision" :value="__('Decision')" />
+                        <textarea class="rounded-lg border-gray-300 resize-none h-24" id="decision" name="decision" required></textarea>
+                        <x-input-error class="mt-2" :messages="$errors->get('decision')" />
                     </div>
         
                     {{-- Button for submitting the form --}}
