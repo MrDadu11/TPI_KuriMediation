@@ -1,8 +1,8 @@
+
 <section>
-    @csrf
-    @method('PUT')
-    <div class="px-5 py-3 border rounded-lg shadow-lg">
+    <div class="px-5 py-3 border rounded-lg shadow-xl">
         <form action="{{ route('meeting.update', ['meetingId' => $currentMeeting->id ]) }}" method="POST">
+            @csrf
             <div class="flex justify-between items-start xl:items-center flex-col xl:flex-row">
                 <div>
                     <label class="text-xl text-blue-800 font-bold " for="name">Nom :</label>
@@ -18,7 +18,7 @@
                         <label for="type_id" class="font-bold xl:px-3 py-1 text-blue-800 text-lg">Type:</label>
                         <select wire:model="currentMeeting.type_id" name="type_id" class="rounded-lg border border-gray-300" required>
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                <option value="{{ $type->id }}"{{ $currentMeeting->type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('type_id')" />
@@ -58,13 +58,16 @@
         <form action="{{ route('document.upload', ['meetingId' => $currentMeeting->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
-            <ul class="rounded-lg border px-5 py-3 flex flex-col items-center w-full space-y-5">
+            <ul class="rounded-lg border px-5 py-3 flex flex-col items-center w-full space-y-2">
                 <li class="border text-blue-800 font-bold rounded-md px-1">Documents</li>
-                @for ($i = 0; $i < 3; $i++)
-    
-                @endfor
+                @foreach ($userFiles as $file)
+                    <li>
+                        <a href="{{ route('document.show', ["fileName" => $file, "meetingId" => $currentMeeting->id]) }}">{{ $file }}</a>
+                        <a href="{{ route('document.destroy', ["fileName" => $file, "meetingId" => $currentMeeting->id]) }}" onclick="return confirm('Voulez-vous supprimer ce fichier?');"><i class="fa fa-trash fa-lg"></i></a>
+                    </li>
+                @endforeach
                 <li><input type="file" name="document" id="document"></li>
-                <li><button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white h-10 items-center">Sauvegarder</button></li>
+                <li><button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white h-10 items-center mt-2">Sauvegarder</button></li>
             </ul>
         </form>
     </div>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,12 @@
     @vite('resources/css/app.css')
     {{-- Icons for edit and delete --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Meeting</title>
+    <title>Modifier : {{ $currentMeeting->name }}</title>
     @livewireStyles
 </head>
 <body>
     <x-app-layout>
-        <div class="bg-white shadow-lt border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
+        <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
             <livewire:pages.meetings.edit-meeting-form 
             :currentMeeting="$currentMeeting" 
             :types="$types"
@@ -19,6 +20,7 @@
             :months="$months"
             :currentYear="$currentYear"
             :currentMeetingType="$currentMeetingType"
+            :userFiles="$userFiles"
             />
             <section class="flex flex-col p-4 mt-5 bg-white border border-gray-300 shadow-lg rounded-md">  
                 <header class="flex justify-between border-b pb-2 border-black">
@@ -36,9 +38,6 @@
                                 <option value="orderByAlphabeticReverse">Z-A</option>
                             </select>
                         </div>
-                        {{-- <livewire:pages.aftercares.create-aftercare-form
-                        :currentMeeting="$currentMeeting"
-                        /> --}}
                         <a href="{{ route('aftercare.show', $currentMeeting->id) }}" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
                         +
                         </a>
@@ -58,7 +57,7 @@
                                     </div>
                                     <div class="flex space-x-2 items-center">
                                         <span><a href="{{ route('aftercare.edit', $userAftercare->id) }}"><i class="fa fa-edit fa-lg" ></i></a></span>
-                                        <span><a href="{{ route('aftercare.destroy', $userAftercare->id) }}"><i class="fa fa-trash fa-lg"></i></a></span>
+                                        <span><a href="{{ route('aftercare.destroy', $userAftercare->id) }}" onclick="return confirm('Voulez-vous supprimer ce suivi?');"><i class="fa fa-trash fa-lg"></i></a></span>
                                     </div>
                                 </li>         
                                 @endforeach                                                  

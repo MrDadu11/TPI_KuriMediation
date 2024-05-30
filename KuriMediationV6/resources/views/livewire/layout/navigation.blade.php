@@ -23,7 +23,7 @@ new class extends Component
 
 <nav x-data="{ open: false }" class="">
     <!-- Primary Navigation Menu -->
-    <div class="bg-white border-b border-gray-100 md:shadow-md md:border md:mt-2 max-w-screen xl:max-w-7xl mx-auto px-4 py-4 md:px-6 xl:px-8 rounded-xl">
+    <div class="bg-white border-b border-gray-100 md:shadow-lg md:border md:mt-2 max-w-screen xl:max-w-7xl mx-auto px-4 py-4 md:px-6 xl:px-8 rounded-xl">
         <div class="pt-2 px-2 inline-flex w-full justify-between items-center">            
             <div class="md:flex">
                 <!-- Logo -->
@@ -34,7 +34,7 @@ new class extends Component
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden md:my-px md:ms-10 md:flex bg-gray-100">
+                <div class="hidden md:my-px md:ms-10 md:flex bg-gray-100 xl:shadow-md">
                     <x-nav-link class="rounded-ss-lg rounded-es-lg" :href="route('meeting.index')" :active="request()->routeIs('meeting.index')" wire:navigate>
                         {{ __('Accueil') }}
                     </x-nav-link>
@@ -48,12 +48,14 @@ new class extends Component
                         {{ __('A Propos') }}
                     </x-nav-link>
                     @if (Auth::user()->isAdmin == 1)
-                        <x-nav-link class="bg-gray-300 bg-opacity-65 rounded-ss-lg rounded-es-lg active:bg-blue-800" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                    <div class="bg-gray-300">
+                        <x-nav-link class="rounded-ss-lg rounded-es-lg" :href="route('user.index')" :active="request()->routeIs('user.index')" wire:navigate>
                             {{ __('Utilisateurs') }}
                         </x-nav-link>
-                        <x-nav-link class="bg-gray-300 bg-opacity-65 rounded-se-lg rounded-ee-lg active:bg-blue-800" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                        <x-nav-link class="rounded-se-lg rounded-ee-lg" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
                             {{ __('Types') }}
                         </x-nav-link>                     
+                    </div>
                     @endif
                 </div>
             </div>            
@@ -63,7 +65,7 @@ new class extends Component
                 <p class="font-bold">{{ auth()->user()->username }}</p>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center border border-transparent rounded-3xl md:ml-3">
+                        <button class="inline-flex items-center rounded-3xl md:ml-3">
                             <img class="rounded-3xl" height="50px" width="50px" src="{{ asset(auth()->user()->profile_pic_path) }}" alt="ProfilePicture">
                         </button>
                     </x-slot>

@@ -16,7 +16,7 @@ class AftercareController extends Controller
         $meeting = Meeting::where('id', $meetingId)->first();
 
 
-        return view('add_aftercare', [
+        return view('aftercares/add_aftercare', [
             'currentMeeting' => $meeting
         ]);
     }

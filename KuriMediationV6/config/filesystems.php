@@ -56,6 +56,16 @@ return [
             'throw' => false,
         ],
 
+        // Custom disk
+
+        'pdf' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/pdf'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
     ],
 
     /*
@@ -70,7 +80,8 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // public_path('storage') => storage_path('app/public'),
+        public_path('pdf') => storage_path('app/public/pdf'),
     ],
 
 ];

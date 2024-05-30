@@ -31,15 +31,14 @@ class GraphicController extends Controller
         '11' => 'Novembre',
         '12' => 'Décembre'
     ];
-    
+
 
     // Function that display the graphics page
     public function index($year = null){
 
+
         // Gets all types of meetings
         $types = Type::all();
-
-
 
         // Gets the years
         $years = Meeting::selectRaw('extract(year FROM schedule) AS year')
@@ -73,6 +72,10 @@ class GraphicController extends Controller
                     }
                 }
             }
+
+
+            $charts = [];
+
             
             $chart1PerMonth = new ChartsHC;
             $chart1PerMonth->labels(array_values(self::MONTHS));
@@ -99,12 +102,17 @@ class GraphicController extends Controller
                 'responsive' => true,
             ]);
 
+            
+            array_push($charts, $chart1PerMonth, $chart1PerCategory, $chart2PerMonth, $chart2PerCategory);
+
 
             return view('graphics', [
                 'types' => $types,
                 'years' => $years,
                 'months' => self::MONTHS,
+                'currentUser' => Auth::user(),
                 'currentYear' => intval($year),
+                'charts' => $charts,
                 'chart1PerMonth' => $chart1PerMonth,
                 'chart1PerCategory' => $chart1PerCategory,
                 'chart2PerMonth' => $chart2PerMonth,
@@ -130,6 +138,11 @@ class GraphicController extends Controller
                 'types' => $types,
                 'years' => $years,
                 'months' => self::MONTHS,
+                'chartsDesktop' => null,
+                'chart1PerMonth' => null,
+                'chart1PerCategory' => null,
+                'chart2PerMonth' => null,
+                'chart2PerCategory' => null,
             ]);
         }
     }

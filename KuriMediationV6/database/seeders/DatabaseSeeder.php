@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public $types = ['Classe', 'Conflit Elèves', 'Conflit Enseignants', 'Classe', 'Financier', 'Harcèlement'];
+    public $types = ['Conflit Elèves', 'Conflit Enseignants', 'Classe', 'Financier', 'Harcèlement'];
     /**
      * Seed the application's database.
      */

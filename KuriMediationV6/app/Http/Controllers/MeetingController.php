@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Meeting;
 use App\Models\Type;
 use App\Models\Aftercare;
-use Carbon\CarbonInterval;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
+/** 
+ * 
+ * Lieu: ETML - Vennes
+ * Auteur: Chris Noah Matthew Suboonsan
+ * Date: 17.05.2024
+ * Description: Contrôleur de ressources pour les entretiens
+ * 
+ * **/
+
+
 
 
 class MeetingController extends Controller
@@ -29,6 +39,7 @@ class MeetingController extends Controller
         ->distinct()
         ->orderBy('year', 'asc')
         ->get();
+
         
         // Checks if the year has been defined, if so, the user gets to the view with the data.
         if($year){
@@ -51,7 +62,6 @@ class MeetingController extends Controller
             ->distinct()
             ->orderBy('year', 'asc')
             ->first()->year;
-            
             
             
             return redirect()->route('meeting.index', $year);
@@ -129,12 +139,23 @@ class MeetingController extends Controller
         $currentMeeting = Meeting::where('id', $meetingId)->first();
         // Gets the type name of the meeting
         $currentMeetingType = Type::where('id', $meetingId)->first()->name;
+
+        // Retrieves each PDF files by looking in the directory
+        $filesPath = Auth::id(). "/" . $meetingId;
+        $userFilesPaths = Storage::disk('pdf')->files($filesPath);
+        $filesName = [];
+        // Split the full path so it can retrieve only the file name
+        foreach($userFilesPaths as $filePath){
+            $filePath = mb_split("/", $filePath);
+            array_push($filesName, end($filePath));
+        }
             
-            return view('edit_meeting', [
+            return view('meetings/edit_meeting', [
                 'types' => $types,
                 'years' => $years,
                 'months' => $months,
                 'currentYear' => $year,
+                'userFiles' => $filesName,
                 'currentMeeting' => $currentMeeting,
                 'currentMeetingType' => $currentMeetingType,
                 'userAftercares' => $aftercares,

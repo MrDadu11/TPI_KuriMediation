@@ -11,7 +11,7 @@
 </head>
 <body>
     <x-app-layout>
-            <div class="bg-white shadow-lt border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
+            <div class="shadow-xl shadow-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
                 <div class="p-3 md:p-6">
                     <section>
                         <div class="flex mb-2">
@@ -67,7 +67,7 @@
                                     <livewire:pages.meetings.create-meeting-form/>
                                 </div>
                             </div>
-                            <div class="md:max-h-96 overflow-auto">
+                            <div class="md:max-h-96 overflow-auto  rounded-md p-1">
                                 @if ($userMeetings !== 0)
                                     @for ($i = 0; $i < 12; $i++)
                                     <ul>
@@ -78,10 +78,15 @@
                                                 <span>Nom: {{ $meeting->name }}</span>
                                                 <span>Intervenants: {{ $meeting->visitor }}</span>
                                                 <span>Description: {{ $meeting->description }}</span>
+                                                @foreach ($types as $type)
+                                                    @if ($type->id == $meeting->type_id)
+                                                        <span>Type: {{ $type->name }}</span>   
+                                                    @endif                                                    
+                                                @endforeach
                                             </div>
                                             <div class="flex space-x-2 items-center">
                                                 <span><a href="{{ route('meeting.edit', $meeting->id) }}"><i class="fa fa-edit fa-lg" ></i></a></span>
-                                                <span><a href="{{ route('meeting.destroy', $meeting->id) }}"><i class="fa fa-trash fa-lg"></i></a></span>
+                                                <span><a href="{{ route('meeting.destroy', $meeting->id) }}" onclick="return confirm('Voulez-vous supprimer cet entretien?');"><i class="fa fa-trash fa-lg"></i></a></span>
                                             </div>
                                         </li>
                                         @endforeach                            
