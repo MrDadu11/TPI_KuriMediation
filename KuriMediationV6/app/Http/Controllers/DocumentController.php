@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Meeting;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -30,16 +30,22 @@ class DocumentController extends Controller
         if ($request->file('document')->isValid()) {
 
             $request->file('document')->storeAs($folderPath, $request->file('document')->getClientOriginalName());
+            Document::create([
+                'filename' => $request->file('document')->getClientOriginalName(),
+                'meeting_id' => $meetingId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
             return redirect()->back();
         }
 
-        return back()->with('error', 'Failed to upload file.');
+        return back()->with('error', 'Erreur de montage du fichier. Vérifiez que c\'est au format PDF.');
     }
 
     public function destroy($meetingId, $fileName){
         
-        // Gets the pdf path
+        // Get the pdf's path
         $filePath = 'pdf/'. Auth::id(). "/" . $meetingId . "/" . $fileName;
 
         Storage::disk('public')->delete($filePath);
@@ -50,10 +56,10 @@ class DocumentController extends Controller
     // Function that displays the pdf and make it downloadable
     public function show($meetingId, $fileName){
 
-        // Gets the pdf path
+        // Get the pdf path
         $filePath = 'pdf/'. Auth::id(). "/" . $meetingId . "/" . $fileName;
         
-        // Gets the absolute path
+        // Get the absolute path
         $path = Storage::disk('public')->path($filePath);
 
         return response()->file($path);

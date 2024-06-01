@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public $types = ['Conflit Elèves', 'Conflit Enseignants', 'Classe', 'Financier', 'Harcèlement'];
+    public const TYPES = ['Conflit Elèves', 'Conflit Enseignants', 'Classe', 'Financier', 'Harcèlement'];
     /**
      * Seed the application's database.
      */
@@ -25,9 +25,17 @@ class DatabaseSeeder extends Seeder
             'password' => 'ETML1234',
             'isAdmin' => true,
         ]);
+        User::factory()->create([
+            'username' => 'user1',
+            'firstname' => 'user1',
+            'lastname' => 'user1',
+            'email' => 'user1@user.com',
+            'password' => 'ETML1234',
+            'isAdmin' => false,
+        ]);
 
         // Creates the list of basic categories
-        foreach($this->types as $type){
+        foreach(self::TYPES as $type){
             Type::factory()->create([
                 'name' => $type
             ]);

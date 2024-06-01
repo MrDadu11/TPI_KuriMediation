@@ -41,25 +41,21 @@ new class extends Component
                     <x-nav-link :href="route('graphic.index')" :active="request()->routeIs('graphic.index')" wire:navigate>
                         {{ __('Graphiques') }}
                     </x-nav-link>
-                    {{-- <x-nav-link :href="route('budgets.index')" :active="request()->routeIs('budgets.index')" wire:navigate>
-                        {{ __('Modifier mon Budget') }}
-                    </x-nav-link> --}}
                     <x-nav-link class="rounded-se-lg rounded-ee-lg" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
                         {{ __('A Propos') }}
                     </x-nav-link>
                     @if (Auth::user()->isAdmin == 1)
-                    <div class="bg-gray-300">
-                        <x-nav-link class="rounded-ss-lg rounded-es-lg" :href="route('user.index')" :active="request()->routeIs('user.index')" wire:navigate>
+                    <div class="bg-gray-300 flex items-center rounded-lg">
+                        <a class="p-2 border border-transparent text-md font-bold leading-5 hover:text-white focus:outline-none focus:text-white transition duration-150 ease-in-out rounded-ss-lg rounded-es-lg {{ request()->routeIs('user.index') ? 'bg-blue-800 text-white' : 'bg-gray-300 hover:bg-blue-800 focus:bg-blue-800' }}" href="{{ route('user.index') }}" wire:navigate>
                             {{ __('Utilisateurs') }}
-                        </x-nav-link>
-                        <x-nav-link class="rounded-se-lg rounded-ee-lg" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+                        </a>
+                        <a class="p-2 border border-transparent text-md font-bold leading-5 hover:text-white focus:outline-none focus:text-white transition duration-150 ease-in-out rounded-se-lg rounded-ee-lg {{ request()->routeIs('type.index') ? 'bg-blue-800 text-white' : 'bg-gray-300 hover:bg-blue-800 focus:bg-blue-800' }}" href="{{ route('type.index') }}" wire:navigate>
                             {{ __('Types') }}
-                        </x-nav-link>                     
+                        </a>                                                              
                     </div>
                     @endif
                 </div>
             </div>            
-            
             <!-- Settings Dropdown -->
             <div class="hidden md:flex md:items-center md:ms-6">
                 <p class="font-bold">{{ auth()->user()->username }}</p>
@@ -103,17 +99,14 @@ new class extends Component
             <x-responsive-nav-link :href="route('graphic.index')" :active="request()->routeIs('graphic.index')" wire:navigate>
                 {{ __('Graphiques') }}
             </x-responsive-nav-link>
-            {{-- <x-responsive-nav-link :href="route('budgets.index')" :active="request()->routeIs('budgets.index')" wire:navigate>
-                {{ __('Modifier mon Budget') }}
-            </x-responsive-nav-link> --}}
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
                 {{ __('A Propos') }}
             </x-responsive-nav-link>
             @if (Auth::user()->isAdmin == 1)
-            <x-responsive-nav-link class="bg-gray-200 text-blue-800 font-bold active:bg-blue-800" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+            <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')" wire:navigate>
                 {{ __('Utilisateurs') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link class="bg-gray-200 text-blue-800 font-bold active:bg-blue-800" :href="route('about')" :active="request()->routeIs('about')" wire:navigate>
+            <x-responsive-nav-link :href="route('type.index')" :active="request()->routeIs('type.index')" wire:navigate>
                 {{ __('Types') }}
             </x-responsive-nav-link>                     
         @endif

@@ -54,11 +54,11 @@
                         </div>
                     </section>
                 @else
-                    <div class="font-bold text-xl flex justify-between items-center">
+                    <div class="font-bold text-xl flex justify-between items-center flex-col xl:flex-row space-y-5 xl:space-y-0">
                         <div>Aucune donnée</div>
-                    </div>
-                    <div>
-                        <a href="{{ route('meeting.index') }}" class="px-2 py-1 border shadow-md bg-white text-black rounded-xl hover:bg-blue-800 hover:text-white transition duration-150 ease-in-out "> Ajouter un entretien</a>
+                        <div>
+                            <a href="{{ route('meeting.index') }}" class="px-2 py-1 text-white border shadow-md bg-blue-800 rounded-xl hover:bg-blue-600 transition duration-150 ease-in-out "> Ajouter un entretien</a>
+                        </div>
                     </div>
                 @endif
             </div>                       

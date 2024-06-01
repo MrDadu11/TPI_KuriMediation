@@ -14,6 +14,7 @@
         <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
             <section>
                 <div class="px-5 py-3 border rounded-lg shadow-xl">
+                    {{-- Form that updates the user's informations --}}
                     <form action="{{ route('user.update', $selectedUser->id) }}" method="POST">
                         @csrf
                         <div class="flex justify-between items-start xl:items-center flex-col xl:flex-row space-y-3">
@@ -25,8 +26,8 @@
                             <div>
                                 <label for="isAdmin" class="font-bold xl:px-3 py-1 text-blue-800 text-lg">Admin:</label>
                                 <select name="isAdmin" class="rounded-lg border border-gray-300" required>
-                                    <option value="true"{{ $selectedUser->isAdmin == true ? 'selected' : '' }}>oui</option>
-                                    <option value="false"{{ $selectedUser->isAdmin == false ? 'selected' : '' }}>non</option>
+                                    <option value="1"{{ $selectedUser->isAdmin == true ? 'selected' : '' }}>oui</option>
+                                    <option value="0"{{ $selectedUser->isAdmin == false ? 'selected' : '' }}>non</option>
                                 </select>
                                 <x-input-error class="mt-2" :messages="$errors->get('idAdmin')" />
                             </div>
@@ -50,12 +51,12 @@
                                 </div>
                                 <div>
                                     <label class="text-xl text-blue-800 font-bold " for="password">Mot de passe :</label>
-                                    <input type="password" class="rounded-lg border-gray-200 resize-none w-full" id="password" name="password" placeholder="Mot de passe" required>
+                                    <input type="password" class="rounded-lg border-gray-200 resize-none w-full" id="password" name="password" placeholder="Mot de passe">
                                     <x-input-error class="mt-2" :messages="$errors->get('password')" />
                                 </div>
                                 <div>
                                     <label class="text-xl text-blue-800 font-bold " for="passwordConfirm">Mot de passe :</label>
-                                    <input type="password" class="rounded-lg border-gray-200 resize-none w-full" id="passwordConfirm" name="passwordConfirm" placeholder="Confirmer mot de passe" required>
+                                    <input type="password" class="rounded-lg border-gray-200 resize-none w-full" id="passwordConfirm" name="passwordConfirm" placeholder="Confirmer mot de passe">
                                     <x-input-error class="mt-2" :messages="$errors->get('passwordConfirm')" />
                                 </div>
                             </div>

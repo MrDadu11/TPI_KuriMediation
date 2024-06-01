@@ -16,7 +16,6 @@
                 <form action="{{ route('aftercare.update', $currentAftercare->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-
                     <div class="px-5 py-3 border rounded-lg shadow-md">                 
                         <div class="flex justify-between space-x-2">
                             <div>

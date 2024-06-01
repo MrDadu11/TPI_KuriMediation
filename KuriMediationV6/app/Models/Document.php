@@ -16,5 +16,6 @@ class Document extends Model
      */
     protected $fillable = [
         'filename',
+        'meeting_id'
     ];
 }

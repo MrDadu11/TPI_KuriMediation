@@ -16,7 +16,7 @@ class AftercareController extends Controller
         $meeting = Meeting::where('id', $meetingId)->first();
 
 
-        return view('aftercares/add_aftercare', [
+        return view('aftercares.add_aftercare', [
             'currentMeeting' => $meeting
         ]);
     }
@@ -24,8 +24,7 @@ class AftercareController extends Controller
     // Function that creates a new meeting with its parameters
     public function store(Request $request, $meetingId){
 
-        // dd($request, $meetingId);
-        // Validates the data
+        // Validate the data
         $validatedData = $request->validate([
             'description' => 'required|string|max:255',
             'schedule' => 'required|date',
@@ -34,10 +33,7 @@ class AftercareController extends Controller
             'visitor' => 'required|string|max:255',
         ]);
 
-
-        // dd($validatedData);
-
-        // Inserts the validated data and creates the aftercare
+        // Insert the validated data and create the aftercare
         Aftercare::create([
             'description' => $validatedData['description'],
             'schedule' => $validatedData['schedule'],
@@ -49,7 +45,7 @@ class AftercareController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Redirects to the meeting information page
+        // Redirect to the meeting information page
         return redirect()->route('meeting.edit', $meetingId);
     }
     // Function that shows the editing page of a meeting
@@ -57,7 +53,7 @@ class AftercareController extends Controller
 
             $currentAftercare = Aftercare::where('id', $aftercareId)->first();
             $currentMeeting = Meeting::where('id', $currentAftercare->meeting_id)->first();
-            return view('edit_aftercare',[
+            return view('aftercares.edit_aftercare',[
                 'currentAftercare' => $currentAftercare,
                 'currentMeeting' => $currentMeeting,
             ]);
@@ -69,19 +65,20 @@ class AftercareController extends Controller
             $currentAftercare = Aftercare::where('id', $aftercareId)->first();
             $currentMeeting = Meeting::where('id', $currentAftercare->meeting_id)->first();
 
-            // Validates the data
+            // Validate the data
             $validatedData = $request->validate([
                 'description' => 'required|string|max:255',
                 'visitor' => 'required|string|max:255',
                 'duration' => 'required|int',
                 'decision' => 'required|string|max:255',
             ]);
-            
+
+            // Update the aftercare
             $currentAftercare->update($validatedData);
             
             
 
-            // Redirects to the homepage
+            // Redirect to the homepage
             return redirect()->route('meeting.edit', $currentMeeting->id);
     }
 
@@ -89,7 +86,9 @@ class AftercareController extends Controller
 
     // Function that deletes the chosen meeting based on its ID
     public function destroy($aftercareId){
+        // Delete the aftercare
         Aftercare::where('id', $aftercareId)->delete();
+        // Redirect back
         return redirect()->back();
     }
 

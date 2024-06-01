@@ -10,7 +10,7 @@
     <x-app-layout>
         <div class="bg-white shadow-lg border md:mt-10 max-w-full md:max-w-7xl md:min-h-full mx-auto px-4 py-2 md:px-8 xl:px-10 rounded-xl">
             <div class="p-3 md:px-6">
-                <section class="border shadow-lg rounded-xl py-12 text-justify">
+                <section class="border shadow-lg rounded-xl py-12 text-justify px-8">
                     <h1 class="font-bold text-2xl flex justify-center mb-4">A propos</h1>                    
                     <div class="text-lg justify-center xl:mx-40">
                         <p>KuriMediation est une application web servant à faciliter la gestion de cas de médiations. Cette application est développée pendant la période du TPI
@@ -19,8 +19,8 @@
                 </section>
                 <section class="border shadow-lg rounded-xl py-12 px-3 text-justify">
                     <h1 class="font-bold text-2xl flex justify-center mb-4">Personnes suivants le projet</h1>                    
-                    <div class="flex justify-between text-center space-x-2">
-                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1">
+                    <div class="flex justify-between text-center xl:space-x-2 flex-col md:flex-row">
+                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 h-36 flex justify-center flex-col">
                             <div class="font-bold">
                                 Candidat
                             </div>
@@ -28,7 +28,7 @@
                                 Chris Suboonsan
                             </div>
                         </div>
-                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 text-red-600">
+                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 h-36 flex justify-center flex-col text-red-600">
                             <div class="font-bold">
                                 Expert 1
                             </div>
@@ -36,7 +36,7 @@
                                 Nicolas Borboën
                             </div>
                         </div>
-                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 text-green-500">
+                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 h-36 flex justify-center flex-col text-green-500">
                             <div class="font-bold">
                                 Expert 2
                             </div>
@@ -44,7 +44,7 @@
                                 Bernard Oberson
                             </div>
                         </div>
-                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 text-purple-500">
+                        <div class="border shadow-lg rounded-xl px-5 py-2 flex-1 h-36 flex justify-center flex-col text-purple-500">
                             <div class="font-bold">
                                 Chef de projet
                             </div>

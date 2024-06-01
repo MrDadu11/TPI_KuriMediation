@@ -23,19 +23,20 @@ use Illuminate\Support\Facades\Storage;
 
 class MeetingController extends Controller
 {
+
+    public const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']; 
+
     /**
     *   Display the meeting's main page
     */
     public function index($year = null){
         
         // Gets all types of meetings
-        $types = Type::all();
-        
-        // Array of months
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];       
+        $types = Type::all();      
         
         // Gets only the year value from the schedule
         $years = Meeting::selectRaw('extract(year FROM schedule) AS year')
+        ->where('user_id', Auth::id())
         ->distinct()
         ->orderBy('year', 'asc')
         ->get();
@@ -51,7 +52,7 @@ class MeetingController extends Controller
                 'upcomingMeetings' => $this->countUpcomingMeetings($year),
                 'types' => $types,
                 'years' => $years,
-                'months' => $months,
+                'months' => self::MONTHS,
                 'currentYear' => $year,
             ]);
 
@@ -72,11 +73,12 @@ class MeetingController extends Controller
             return view('home', [
                 'types' => $types,
                 'years' => $years,
-                'months' => $months,
+                'months' => self::MONTHS,
                 'meetingsTotal' => 0,
                 'userMeetings' => 0,
                 'upcomingMeetings' => 0,
                 'timeSpent' => 0,
+                'currentYear' => null,
                 'currentUser' => Auth::user(),
             ]);
         }
@@ -84,7 +86,9 @@ class MeetingController extends Controller
 
     // Function that creates a new meeting with its parameters
     public function store(Request $request){
-        // Validates the data
+        // Instanciate a new meeting
+        $meeting = new Meeting();
+        // Validate the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -92,33 +96,22 @@ class MeetingController extends Controller
             'type_id' => 'required|exists:types,id',
             'visitor' => 'required|string|max:255',
         ]);
+        // Define the missing data
+        $validatedData['duration'] = 0;
+        $validatedData['decision'] = '';
+        $validatedData['user_id'] = Auth::id();
 
         // Inserts the validated data and creates the meeting
-        Meeting::create([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'schedule' => $validatedData['schedule'],
-            'visitor' => $validatedData['visitor'],
-            'duration' => 0,
-            'decision' => '',
-            'user_id' => Auth::id(),
-            'type_id' => $validatedData['type_id'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // Redirects to the homepage
+        $meeting->create($validatedData);
+        
+        // Redirect to the homepage
         return redirect()->route('meeting.index');
     }
 
-    // Function that shows the editing page of a meeting
-    public function edit($meetingId){
+    public function show($meetingId){
 
         // Gets all types of meetings
         $types = Type::all();
-        
-        // Array of months
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         
         $aftercares = Aftercare::where('meeting_id', $meetingId)->get();
         
@@ -138,7 +131,55 @@ class MeetingController extends Controller
         // Gets the current meeting being edited
         $currentMeeting = Meeting::where('id', $meetingId)->first();
         // Gets the type name of the meeting
-        $currentMeetingType = Type::where('id', $meetingId)->first()->name;
+        $currentMeetingType = Type::where('id', $currentMeeting->type_id)->first()->name;
+
+        // Retrieves each PDF files by looking in the directory
+        $filesPath = Auth::id(). "/" . $meetingId;
+        $userFilesPaths = Storage::disk('pdf')->files($filesPath);
+        $filesName = [];
+        // Split the full path so it can retrieve only the file name
+        foreach($userFilesPaths as $filePath){
+            $filePath = mb_split("/", $filePath);
+            array_push($filesName, end($filePath));
+        }
+        
+        return view('meetings.show_meeting', [
+                'types' => $types,
+                'years' => $years,
+                'months' => self::MONTHS,
+                'currentYear' => $year,
+                'userFiles' => $filesName,
+                'currentMeeting' => $currentMeeting,
+                'currentMeetingType' => $currentMeetingType,
+                'userAftercares' => $aftercares,
+        ]);
+    }
+
+    // Function that shows the editing page of a meeting
+    public function edit($meetingId){
+
+        // Gets all types of meetings
+        $types = Type::all();
+        
+        $aftercares = Aftercare::where('meeting_id', $meetingId)->get();
+        
+        $year = Meeting::selectRaw('extract(year FROM schedule) AS year')
+        ->where('id', $meetingId)
+        ->distinct()
+        ->orderBy('year', 'asc')
+        ->first();
+
+
+        // Gets only the year value from the schedule
+        $years = Meeting::selectRaw('extract(year FROM schedule) AS year')
+        ->distinct()
+        ->orderBy('year', 'asc')
+        ->get();
+
+        // Gets the current meeting being edited
+        $currentMeeting = Meeting::where('id', $meetingId)->first();
+        // Gets the type name of the meeting
+        $currentMeetingType = Type::where('id', $currentMeeting->type_id)->first()->name;
 
         // Retrieves each PDF files by looking in the directory
         $filesPath = Auth::id(). "/" . $meetingId;
@@ -153,7 +194,7 @@ class MeetingController extends Controller
             return view('meetings/edit_meeting', [
                 'types' => $types,
                 'years' => $years,
-                'months' => $months,
+                'months' => self::MONTHS,
                 'currentYear' => $year,
                 'userFiles' => $filesName,
                 'currentMeeting' => $currentMeeting,
@@ -196,10 +237,16 @@ class MeetingController extends Controller
         return $total->count();
     }
 
-    // Function that returns the total amount of time spent for meetings and its aftercares for the user based on the chosen year
+    /**
+     *   Function that returns the total amount of time spent for meetings and its aftercares
+     *   for the user based on the chosen year
+     **/
     public function countUserTimespent($year){
-        $total = 0;
-        $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
+        $total = 0; // Define the total
+        $meetings = Meeting::where('user_id', Auth::id()) // Get all meetings by the year
+                            ->whereYear('schedule', $year)
+                            ->get(); 
+        // Sum the values into $total
         foreach($meetings as $meeting){
             $total += $meeting->duration;
             $meetingsAftercares = Aftercare::where('meeting_id', $meeting->id)->get();
@@ -207,14 +254,9 @@ class MeetingController extends Controller
                 $total += $aftercare->duration;
             }
         }
-
-        $hours = floor($total / 60);
-
-        $minutes = $total % 60;
-
-        $format = '%02dh%02dmin';
-
-        return sprintf($format, $hours, $minutes);
+        $hours = floor($total / 60); // Get the lowest value
+        $minutes = $total % 60; // Get the minutes from the hours
+        return sprintf('%02dh%02dmin', $hours, $minutes);
     }
 
     // Function that calcultates the number of meetings upcoming based on the current date
@@ -230,7 +272,9 @@ class MeetingController extends Controller
         return $count;
     }
 
-    // Function that retrieves all meetings the user has for the chosen year
+    /** Function that retrieves all meetings the user has for the chosen year.
+     *  returns an array sorted by months
+     **/ 
     public function getUserAllMeetings($year){
         // Gets all user meetings based on the year
         for($i = 0; $i < 12; $i++){

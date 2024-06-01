@@ -68,6 +68,7 @@
                                 </div>
                             </div>
                             <div class="md:max-h-96 overflow-auto  rounded-md p-1">
+                                {{-- Checks if the users has meetings or not --}}
                                 @if ($userMeetings !== 0)
                                     @for ($i = 0; $i < 12; $i++)
                                     <ul>
@@ -85,6 +86,7 @@
                                                 @endforeach
                                             </div>
                                             <div class="flex space-x-2 items-center">
+                                                <span><a href="{{ route('meeting.show', $meeting->id) }}"><i class="fa fa-info-circle fa-lg" ></i></a></span>
                                                 <span><a href="{{ route('meeting.edit', $meeting->id) }}"><i class="fa fa-edit fa-lg" ></i></a></span>
                                                 <span><a href="{{ route('meeting.destroy', $meeting->id) }}" onclick="return confirm('Voulez-vous supprimer cet entretien?');"><i class="fa fa-trash fa-lg"></i></a></span>
                                             </div>

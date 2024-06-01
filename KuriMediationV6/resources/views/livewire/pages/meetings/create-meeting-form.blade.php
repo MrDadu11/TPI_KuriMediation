@@ -20,13 +20,9 @@ new class extends Component
     public function mount(){
         $this->types = Type::all();
     }
-
-
-
 }; ?>
-
 <div>
-    {{-- Button that  --}}
+    {{-- Button that toggles the visibility of the form --}}
     <button wire:click.prevent="toggleForm" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
         +
     </button>
@@ -41,7 +37,6 @@ new class extends Component
                 <h2 class="text-lg font-medium text-black ">
                     {{ __('Ajouter une nouvel entretien') }}
                 </h2>
-        
                 <p class="mt-1 text-sm text-black ">
                     {{ __("Veuillez insérer les informations ci-dessous") }}
                 </p>
