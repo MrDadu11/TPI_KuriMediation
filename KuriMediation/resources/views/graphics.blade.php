@@ -103,9 +103,9 @@
         // Get references to the charts
         chart1PerMonth = Highcharts.charts[0];
         chart1PerCategory = Highcharts.charts[1];
-
-            chart1PerMonth.setSize(600, 400);
-            chart1PerCategory.setSize(600, 400);
+        // Set the size
+        chart1PerMonth.setSize(600, 400);
+        chart1PerCategory.setSize(600, 400);
     }
 
     // Function to resize charts back
@@ -114,13 +114,11 @@
         if (chart1PerMonth) {
             chart1PerMonth.setSize(null, null, false);
         }
-
         // Resize chart1PerCategory back to original size
         if (chart1PerCategory) {
             chart1PerCategory.setSize(null, null, false);
         }
     }
-
     </script>
     <style>
         /* When the printing is prompted, it changes each class value to be displayed or not. */

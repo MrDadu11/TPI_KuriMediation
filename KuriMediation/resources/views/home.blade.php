@@ -35,8 +35,8 @@
                                 <span class="font-semibold text-5xl">{{ $timeSpent }}</span>
                             </div>
                             <div class="p-5 xl:ml-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
-                                <h1 class="font-bold text-xl text-blue-800">Entretiens à venir</h1>
-                                <span class="font-semibold text-5xl">{{ $upcomingMeetings }}</span>
+                                <h1 class="font-bold text-xl text-blue-800">Moyenne par entretien et ses suivis.</h1>
+                                <span class="font-semibold text-5xl">{{ $avgTimeSpent }}</span>
                             </div>
                         </div>
 

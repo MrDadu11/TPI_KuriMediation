@@ -49,6 +49,7 @@ class MeetingController extends Controller
                 'currentUser' => Auth::user(),
                 'userMeetings' => $this->getUserAllMeetings($year),
                 'timeSpent' => $this->countUserTimeSpent($year),
+                'avgTimeSpent' => $this->getAvgTimeSpent($year),
                 'upcomingMeetings' => $this->countUpcomingMeetings($year),
                 'types' => $types,
                 'years' => $years,
@@ -77,6 +78,7 @@ class MeetingController extends Controller
                 'meetingsTotal' => 0,
                 'userMeetings' => 0,
                 'upcomingMeetings' => 0,
+                'avgTimeSpent' => 0,
                 'timeSpent' => 0,
                 'currentYear' => null,
                 'currentUser' => Auth::user(),
@@ -254,8 +256,8 @@ class MeetingController extends Controller
         // Sum the values into $total
         foreach($meetings as $meeting){
             $total += $meeting->duration;
-            $meetingsAftercares = Aftercare::where('meeting_id', $meeting->id)->get();
-            foreach($meetingsAftercares as $aftercare){
+            $aftercares = Aftercare::where('meeting_id', $meeting->id)->get();
+            foreach($aftercares as $aftercare){
                 $total += $aftercare->duration;
             }
         }
@@ -269,7 +271,6 @@ class MeetingController extends Controller
      *  */ 
     public function countUpcomingMeetings($year){
         $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
-        // dd($meetings);
         $count = 0;
         foreach($meetings as $meeting){
             if($meeting->schedule > today()){
@@ -277,6 +278,31 @@ class MeetingController extends Controller
             }
         }
         return $count;
+    }
+
+    /**
+     * Function that calculates the average time spent on meetings and its aftercares in a year
+     */
+    public function getAvgTimeSpent($year){
+        $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get(); // Get meetings
+        $totalTime = 0; // Total of time spent
+        $counter = 0;   // Counter for the number of meetings and aftercares
+        foreach($meetings as $meeting){
+            $aftercares = Aftercare::where('meeting_id', $meeting->id);
+            $totalTime += $meeting->duration;
+            foreach($aftercares as $aftercare){
+                if($aftercare->duration > 0){   // If the duration of is higher than 0 it counts
+                    $totalTime += $aftercare->duration;
+                    $counter++;
+                }
+            }
+            $counter++;
+        }
+        $AvgTimeSpent = $totalTime / $counter; // Get the average
+        $hours = floor($AvgTimeSpent / 60); // Get the hour leaving the minutes
+        $minutes = $AvgTimeSpent % 60; // Get the minutes from the hours
+        
+        return sprintf('%02dh%02dmin', $hours, $minutes);
     }
 
     /** Function that retrieves all meetings the user has for the chosen year.
