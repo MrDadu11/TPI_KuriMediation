@@ -84,6 +84,7 @@
                                                         <span>Type: {{ $type->name }}</span>   
                                                     @endif                                                    
                                                 @endforeach
+                                                <span>Date: {{ \Carbon\Carbon::parse($meeting->schedule)->format('d.m.Y') }}</span>
                                             </div>
                                             <div class="flex space-x-2 items-center">
                                                 <span><a href="{{ route('meeting.show', $meeting->id) }}"><i class="fa fa-info-circle fa-lg" ></i></a></span>

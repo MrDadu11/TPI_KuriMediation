@@ -58,11 +58,11 @@ return [
 
         // Custom disk
 
+        // PDF Disk
         'pdf' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/pdf'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'root' => storage_path('app/pdf'),
+            'visibility' => 'private',
             'throw' => false,
         ],
 
@@ -80,8 +80,7 @@ return [
     */
 
     'links' => [
-        // public_path('storage') => storage_path('app/public'),
-        public_path('pdf') => storage_path('app/public/pdf'),
+        public_path('storage') => storage_path('app/public'),
     ],
 
 ];

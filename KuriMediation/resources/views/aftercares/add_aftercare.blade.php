@@ -37,7 +37,7 @@
                         {{-- Duration --}}
                         <div class="flex flex-col justify-end xl:w-1/2">
                             <x-input-label for="duration" :value="__('Durée')" class="w-full"/>
-                            <x-text-input type="number" id="duration" name="duration" class="w-full"/>
+                            <input type="number" id="duration" name="duration" class="w-full" min="1" max="3600"/>
                             <x-input-error class="mt-2" :messages="$errors->get('duration')" />
                         </div>
                     </div>

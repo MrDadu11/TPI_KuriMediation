@@ -68,6 +68,9 @@ Route::middleware(['auth'])->group(function() {
 
 
         // Routes for aftercare resource and store, destroy methods
+        Route::get('/aftercare/create/{meetingId}', [AftercareController::class, 'create'])
+                ->name('aftercare.create')
+                ->middleware(['auth']);
         Route::post('/aftercare/store/{meetingId}', [AftercareController::class, 'store'])
                 ->name('aftercare.store')
                 ->middleware(['auth']);
@@ -81,7 +84,7 @@ Route::middleware(['auth'])->group(function() {
                 ->name('aftercare.destroy')
                 ->middleware(['auth']);
         Route::resource('aftercare', AftercareController::class)
-                ->except('store', 'edit', 'update', 'destroy');
+                ->except('store', 'create', 'edit', 'update', 'destroy');
 
         // Route that shows the graphics page
         Route::get('/graphics/{year?}', [GraphicController::class, 'index'])

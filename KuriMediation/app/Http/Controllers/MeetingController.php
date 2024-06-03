@@ -116,7 +116,7 @@ class MeetingController extends Controller
         // Gets all types of meetings
         $types = Type::all();
         
-        $aftercares = Aftercare::where('meeting_id', $meetingId)->get();
+        $aftercares = Aftercare::where('meeting_id', $meetingId)->orderBy('schedule', 'asc')->get();
         
         $year = Meeting::selectRaw('extract(year FROM schedule) AS year')
         ->where('id', $meetingId)
@@ -164,7 +164,7 @@ class MeetingController extends Controller
         // Gets all types of meetings
         $types = Type::all();
         
-        $aftercares = Aftercare::where('meeting_id', $meetingId)->get();
+        $aftercares = Aftercare::where('meeting_id', $meetingId)->orderBy('schedule', 'asc')->get();
         
         $year = Meeting::selectRaw('extract(year FROM schedule) AS year')
         ->where('id', $meetingId)

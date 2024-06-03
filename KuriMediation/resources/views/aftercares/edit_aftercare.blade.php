@@ -30,16 +30,19 @@
                         </div>
                         <div class="mt-2 flex flex-col xl:flex-row justify-between">
                             <div class="w-3/5">
+                                {{-- Visitor --}}
                                 <div>
                                     <x-input-label for="visitor" :value="__('Intervenants')" />
                                     <textarea class="rounded-lg border-gray-200 resize-none w-full" id="visitor" name="visitor" placeholder="Entrez le nom des intervenants" required>{{ $currentAftercare->visitor }}</textarea>
                                     <x-input-error class="mt-2" :messages="$errors->get('visitor')" />
                                 </div>
+                                {{-- Description --}}
                                 <div>
                                     <x-input-label for="description" :value="__('Description')" />
                                     <textarea class="rounded-lg border-gray-200 resize-none w-full" id="description" name="description" placeholder="Entrez les données" required>{{ $currentAftercare->description }}</textarea>
                                     <x-input-error class="mt-2" :messages="$errors->get('description')" />
                                 </div>
+                                {{-- Decision --}}
                                 <div>
                                     <x-input-label for="decision" :value="__('Decision')" />
                                     <textarea class="rounded-lg border-gray-200 resize-none w-full" id="decision" name="decision" placeholder="Entrez les données" required>{{ $currentAftercare->decision }}</textarea>
@@ -48,8 +51,9 @@
                             </div>
                             <div class="flex flex-col xl:flex-row xl:space-x-2">
                                 <div class="flex flex-col justify-center items-center xl:flex-row xl:">
+                                    {{-- Duration --}}
                                     <x-input-label for="duration" :value="__('Durée:')" />
-                                    <x-text-input type="number" class="rounded-lg border-gray-200 resize-none w-1/3 ml-2" id="duration" name="duration" placeholder="0" value="{{ $currentAftercare->duration }}" required></x-text-input>
+                                    <input type="number" min="1" max="3600" class="rounded-lg border-gray-200 resize-none ml-2" id="duration" name="duration" placeholder="0" value="{{ $currentAftercare->duration }}" required/>
                                     <x-input-error class="mt-2" :messages="$errors->get('duration')" />
                                 </div>
                                 <div class="flex justify-center items-center mt-2 xl:mt-0 xl:justify-end xl:items-end">

@@ -38,7 +38,7 @@
                                 <option value="orderByAlphabeticReverse">Z-A</option>
                             </select>
                         </div>
-                        <a href="{{ route('aftercare.show', $currentMeeting->id) }}" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
+                        <a href="{{ route('aftercare.create', $currentMeeting->id) }}" class="ml-2 py-2 px-3 rounded-lg border text-white font-extrabold bg-blue-800 hover:bg-blue-600 transition ease-in-out duration-150">
                         +
                         </a>
                     </div>
@@ -50,7 +50,7 @@
                                 @foreach ($userAftercares as $userAftercare)
                                 <li class="flex justify-between px-4 py-2 border-b rounded-sm text-gray-500">
                                     <div class="flex flex-col md:block md:space-x-8">
-                                        <span>Nom: {{ $userAftercare->name }}</span>
+                                        <span>Date: {{ \Carbon\Carbon::parse($userAftercare->schedule)->format('d.m.Y') }}</span>
                                         <span>Intervenants: {{ $userAftercare->visitor }}</span>
                                         <span>Description: {{ $userAftercare->description }}</span>
                                         <span>Durée: {{ $userAftercare->duration }} mins</span>

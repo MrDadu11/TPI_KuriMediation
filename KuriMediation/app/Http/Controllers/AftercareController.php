@@ -6,26 +6,32 @@ use App\Models\Aftercare;
 use App\Models\Meeting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\After;
 
 class AftercareController extends Controller
 {
     // Controller for aftercares
 
-    
-    public function show($meetingId){
+    /**
+     * Function that displays the form page for the aftercare
+     */
+    public function create($meetingId){
         $meeting = Meeting::where('id', $meetingId)->first();
-
 
         return view('aftercares.add_aftercare', [
             'currentMeeting' => $meeting
         ]);
     }
 
-    // Function that creates a new meeting with its parameters
+    /**
+     *  Function that creates a new meeting with its parameters
+     *  */ 
     public function store(Request $request, $meetingId){
 
+        $aftercare = new Aftercare();   // Create a new Aftercare object
+
         // Validate the data
-        $validatedData = $request->validate([
+        $validatedData = $request->validate([      
             'description' => 'required|string|max:255',
             'schedule' => 'required|date',
             'duration' => 'required|integer',
@@ -33,20 +39,13 @@ class AftercareController extends Controller
             'visitor' => 'required|string|max:255',
         ]);
 
-        // Insert the validated data and create the aftercare
-        Aftercare::create([
-            'description' => $validatedData['description'],
-            'schedule' => $validatedData['schedule'],
-            'visitor' => $validatedData['visitor'],
-            'duration' => $validatedData['duration'],
-            'decision' => $validatedData['decision'],
-            'meeting_id' => $meetingId,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $validatedData['meeting_id'] = $meetingId; // Add the meeting's id
+        $validatedData['created_at'] = now();   // Add the current time
+        $validatedData['updated_at'] = now();   // Add the current time
 
-        // Redirect to the meeting information page
-        return redirect()->route('meeting.edit', $meetingId);
+        $aftercare->create($validatedData); // Insert the validated data and create the aftercare
+
+        return redirect()->route('meeting.edit', $meetingId); // Redirect to the meeting information page
     }
     // Function that shows the editing page of a meeting
     public function edit($aftercareId){

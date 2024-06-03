@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
-    //
+    /**
+     * 
+     * Controller for PDF documents
+     * 
+     */
 
     /**
      * Function that upload file to the user's folder location
@@ -21,47 +25,61 @@ class DocumentController extends Controller
             'document' => 'required|mimes:pdf|max:2048',
         ]);
 
-        // Create a folder for the meeting using the meeting's ID
-        $folderPath = 'public/pdf/'. Auth::id(). "/" . $meetingId;
-        if (!Storage::exists($folderPath)) {
-            Storage::makeDirectory($folderPath);
+        // Create a folder for the meeting using the meeting's ID if it doesn't exist yet
+        $folderPath = Auth::id(). "/" . $meetingId;
+        if (!Storage::disk('pdf')->exists($folderPath)) {
+            Storage::disk('pdf')->makeDirectory($folderPath);
         }
-        // Store the uploaded file within the meeting's folder
+        // Check if the document is valided
         if ($request->file('document')->isValid()) {
-
-            $request->file('document')->storeAs($folderPath, $request->file('document')->getClientOriginalName());
+            // Store the uploaded file within the meeting's folder
+            $request->file('document')->storeAs($folderPath, $request->file('document')->getClientOriginalName(), 'pdf');
+            // Insert the new document into the database   
             Document::create([
                 'filename' => $request->file('document')->getClientOriginalName(),
                 'meeting_id' => $meetingId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
+            // Redirect to the previous page
             return redirect()->back();
         }
-
+        // Redirect to the previous page with an error
         return back()->with('error', 'Erreur de montage du fichier. Vérifiez que c\'est au format PDF.');
     }
-
-    public function destroy($meetingId, $fileName){
-        
+    public function destroy($meetingId, $fileName)
+    {
         // Get the pdf's path
-        $filePath = 'pdf/'. Auth::id(). "/" . $meetingId . "/" . $fileName;
-
-        Storage::disk('public')->delete($filePath);
-
-        return redirect()->back();
+        $filePath = Auth::id() . '/' . $meetingId . '/' . $fileName;
+    
+        if (Storage::disk('pdf')->exists($filePath)) {
+            Storage::disk('pdf')->delete($filePath);
+            // Remove from the database
+            Document::where('filename', $fileName)->where('meeting_id', $meetingId)->delete();
+            return redirect()->back()->with('success', 'Document deleted successfully.');
+        }
+    
+        // If the file does not exist, redirect with an error
+        return redirect()->back()->with('error', 'File not found.');
     }
+    
 
     // Function that displays the pdf and make it downloadable
-    public function show($meetingId, $fileName){
-
+    public function show($meetingId, $fileName)
+    {
         // Get the pdf path
-        $filePath = 'pdf/'. Auth::id(). "/" . $meetingId . "/" . $fileName;
-        
-        // Get the absolute path
-        $path = Storage::disk('public')->path($filePath);
-
-        return response()->file($path);
+        $filePath = 'pdf/' . Auth::id() . '/' . $meetingId . '/' . $fileName;
+    
+        // Check if the file exists
+        if (Storage::disk('pdf')->exists($filePath)) {
+            // Get the absolute path
+            $path = Storage::disk('pdf')->path($filePath);
+    
+            // Return the file for download
+            return response()->file($path);
+        }
+    
+        // If the file does not exist, redirect with an error
+        return redirect()->back()->with('error', 'File not found.');
     }
 }

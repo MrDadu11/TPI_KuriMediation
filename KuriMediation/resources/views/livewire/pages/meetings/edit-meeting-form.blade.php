@@ -12,7 +12,7 @@
                 <div class="flex flex-col xl:flex-row xl:space-x-2 items-start xl:items-center">
                     <div class="space-x-2">
                         <span class="font-bold py-1 text-blue-800 text-lg">Date:</span>
-                        <span class="py-2">{{ \Carbon\Carbon::parse($currentMeeting->schedule)->format('m.d.Y') }}</span>
+                        <span class="py-2">{{ \Carbon\Carbon::parse($currentMeeting->schedule)->format('d.m.Y') }}</span>
                     </div>
                     <div>
                         <label for="type_id" class="font-bold xl:px-3 py-1 text-blue-800 text-lg">Type:</label>
@@ -28,16 +28,19 @@
             </div>
             <div class="mt-2 flex flex-col xl:flex-row justify-between">
                 <div class="xl:w-1/2">
+                    {{-- Visitor --}}
                     <div>
                         <x-input-label for="visitor" :value="__('Intervenants')" />
                         <textarea wire:model="currentMeeting.visitor" class="rounded-lg border-gray-200 resize-none w-full" id="visitor" name="visitor" placeholder="Entrez le nom des intervenants" required>{{ $currentMeeting->visitor }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('visitor')" />
                     </div>
+                    {{-- Descritption --}}
                     <div>
                         <x-input-label for="description" :value="__('Description')" />
                         <textarea wire:model="currentMeeting.description" class="rounded-lg border-gray-200 resize-none w-full" id="description" name="description" placeholder="Entrez les données" required>{{ $currentMeeting->description }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('description')" />
                     </div>
+                    {{-- Decision --}}
                     <div>
                         <x-input-label for="decision" :value="__('Decision')" />
                         <textarea wire:model="currentMeeting.decision" class="rounded-lg border-gray-200 resize-none w-full" id="decision" name="decision" placeholder="Entrez les données" required>{{ $currentMeeting->decision }}</textarea>
@@ -46,6 +49,7 @@
                 </div>
                 <div class="flex flex-col w-full xl:flex-row xl:space-x-2 xl:w-2/5 xl:justify-between">
                     <div class="flex flex-col w-full xl:items-center xl:flex-row">
+                        {{-- Duration --}}
                         <x-input-label for="duration" :value="__('Durée:')" />
                         <x-text-input wire:model="currentMeeting.duration" type="number" min="0" max="3600" class="rounded-lg border-gray-200 resize-none xl:ml-2" id="duration" name="duration" placeholder="0" :value="$currentMeeting->duration" required></x-text-input>
                         <x-input-error class="mt-2" :messages="$errors->get('duration')" />
@@ -65,12 +69,12 @@
                 @foreach ($userFiles as $file)
                     <li>
                         <a href="{{ route('document.show', ["fileName" => $file, "meetingId" => $currentMeeting->id]) }}">{{ $file }}</a>
-                        {{-- Error message for document upload --}}
                         {{-- Link for deleting the document --}}
                         <a href="{{ route('document.destroy', ["fileName" => $file, "meetingId" => $currentMeeting->id]) }}" onclick="return confirm('Voulez-vous supprimer ce fichier?');"><i class="fa fa-trash fa-lg"></i></a>
                     </li>
                 @endforeach
                 <li><input type="file" name="document" id="document"></li>
+                {{-- Error message for document upload --}}
                 @error('document')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
