@@ -12,7 +12,10 @@
 <body>
     <x-app-layout>
         <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
-            <div class="px-5 py-4 border rounded-lg shadow-xl">
+            <a href="{{ route('type.index') }}" class="text-blue-800 font-extrabold text-xl hover:text-black transition ease-in-out duration-300 underline">
+                Retour
+            </a>
+            <div class="px-5 py-4 border rounded-lg shadow-xl mt-3">
                 <div class="text-2xl text-blue-800 font-bold">Modification du type : {{ $currentType->name }}</div>
                 {{-- Form that updates the type's name --}}
                 <form action="{{ route('type.update', $currentType->id) }}" method="POST" class="flex justify-center p-8">

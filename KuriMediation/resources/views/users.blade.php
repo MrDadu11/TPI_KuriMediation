@@ -13,9 +13,6 @@
             <div class="shadow-xl shadow-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
                 <div class="p-3 md:p-6">
                     <section>
-                        <a href="{{ route('meeting.index') }}" class="text-blue-800 font-extrabold text-xl underline hover:text-black transition ease-in-out duration-300">
-                            Retour
-                        </a>
                         <div class="flex flex-col p-4 mt-5">
                             <span class="font-bold text-2xl mb-2 text-blue-800">Utilisateurs</span>
                             <div class="rounded-md p-1">
