@@ -85,6 +85,10 @@
                                                     @endif                                                    
                                                 @endforeach
                                                 <span>Date: {{ \Carbon\Carbon::parse($meeting->schedule)->format('d.m.Y') }}</span>
+                                                {{-- If the duration and the decision are not set --}}
+                                                @if ($meeting->duration == 0)
+                                                    <span class="text-red-500">Manque d'informations</span>
+                                                @endif
                                             </div>
                                             <div class="flex space-x-2 items-center">
                                                 <span><a href="{{ route('meeting.show', $meeting->id) }}"><i class="fa fa-info-circle fa-lg" ></i></a></span>

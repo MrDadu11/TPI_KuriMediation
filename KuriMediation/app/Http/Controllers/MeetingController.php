@@ -48,8 +48,8 @@ class MeetingController extends Controller
                 'meetingsTotal' => $this->countUserAllMeetings($year), // Get the total of meetings the user has
                 'currentUser' => Auth::user(),
                 'userMeetings' => $this->getUserAllMeetings($year),
-                'timeSpent' => $this->countUserTimeSpent($year),
-                'avgTimeSpent' => $this->getAvgTimeSpent($year),
+                'timeSpent' => $this->formatToHoursMins($this->countUserTimeSpent($year)),
+                'avgTimeSpent' => $this->getAvgTimeSpent($this->countUserAllMeetings($year), $this->countUserTimeSpent($year)),
                 'upcomingMeetings' => $this->countUpcomingMeetings($year),
                 'types' => $types,
                 'years' => $years,
@@ -261,9 +261,7 @@ class MeetingController extends Controller
                 $total += $aftercare->duration;
             }
         }
-        $hours = floor($total / 60); // Get the lowest value
-        $minutes = $total % 60; // Get the minutes from the hours
-        return sprintf('%02dh%02dmin', $hours, $minutes);
+        return $total;
     }
 
     /**
@@ -283,26 +281,10 @@ class MeetingController extends Controller
     /**
      * Function that calculates the average time spent on meetings and its aftercares in a year
      */
-    public function getAvgTimeSpent($year){
-        $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get(); // Get meetings
-        $totalTime = 0; // Total of time spent
-        $counter = 0;   // Counter for the number of meetings and aftercares
-        foreach($meetings as $meeting){
-            $aftercares = Aftercare::where('meeting_id', $meeting->id);
-            $totalTime += $meeting->duration;
-            foreach($aftercares as $aftercare){
-                if($aftercare->duration > 0){   // If the duration of is higher than 0 it counts
-                    $totalTime += $aftercare->duration;
-                    $counter++;
-                }
-            }
-            $counter++;
-        }
-        $AvgTimeSpent = $totalTime / $counter; // Get the average
-        $hours = floor($AvgTimeSpent / 60); // Get the hour leaving the minutes
-        $minutes = $AvgTimeSpent % 60; // Get the minutes from the hours
-        
-        return sprintf('%02dh%02dmin', $hours, $minutes);
+    public function getAvgTimeSpent($totalMeeting, $timeSpentYear){
+
+        $AvgTimeSpent = $timeSpentYear / $totalMeeting;
+        return $this->formatToHoursMins($AvgTimeSpent);
     }
 
     /** Function that retrieves all meetings the user has for the chosen year.
@@ -317,5 +299,12 @@ class MeetingController extends Controller
             ->get();
         }
         return $userMeetings;
+    }
+
+    public function formatToHoursMins($total){
+        $hours = floor($total / 60); // Get the hour leaving the minutes
+        $minutes = $total % 60; // Get the minutes from the hours
+        
+        return sprintf('%02dh%02dmin', $hours, $minutes);
     }
 }

@@ -1,4 +1,4 @@
-<section>
+<section class="mt-3">
     <div class="px-5 py-3 border rounded-lg shadow-xl">
         {{-- Form that updates the meeting's informations --}}
         <form action="{{ route('meeting.update', $currentMeeting->id) }}" method="POST">

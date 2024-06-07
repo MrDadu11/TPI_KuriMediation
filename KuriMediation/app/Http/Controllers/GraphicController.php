@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\ChartsHC;
+use App\Charts\Charts;
 use App\Models\Aftercare;
-use ConsoleTVs\Charts\Classes\C3\Chart;
-use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Type;
 
 use Illuminate\Support\Facades\Auth;
-
-use function PHPUnit\Framework\isEmpty;
 
 class GraphicController extends Controller
 {
@@ -97,51 +93,31 @@ class GraphicController extends Controller
             $charts = [];
 
             // Create the first chart
-            $chart1PerMonth = new ChartsHC;
+            $chart1PerMonth = new Charts;
             $chart1PerMonth->labels(array_values(self::MONTHS));
-            $chart1PerMonth
-                ->dataset
-                    (
-                        'Somme du temps passé par mois (heures)',
-                        'column',
-                        array_values($this->formatToHoursMinutes($valPerMonth))
-                    );
+            $chart1PerMonth->dataset('Somme du temps passé par mois (heures)','column',array_values($this->formatToHoursMinutes($valPerMonth)));
             
             // Create the second chart
-            $chart1PerCategory = new ChartsHC;
+            $chart1PerCategory = new Charts;
             $chart1PerCategory->labels(array_values($typesNames));
             // First dataset 
-            $chart1PerCategory
-                ->dataset
-                    (
-                        'Nombre de d\'entretiens passés par catégorie',
-                        'column', 
-                        array_values($nbrPerCat)
-                    )->color('rgb(255, 0, 0)');
+            $chart1PerCategory->dataset('Nombre de d\'entretiens passés par catégorie', 'column', array_values($nbrPerCat))->color('rgb(255, 0, 0)');
 
             // Second dataset
-            $chart1PerCategory
-                ->dataset
-                (
-                    'Somme du temps passé par catégorie (heures)',
-                    'line',
-                    array_values($this->formatToHoursMinutes($valPerCat))
-                )->color('rgba(0, 0, 250, 1)');
+            $chart1PerCategory->dataset('Somme du temps passé par catégorie (heures)', 'line', array_values($this->formatToHoursMinutes($valPerCat)))->color('rgba(0, 0, 250, 1)');
 
             // Create the first chart for Mobile format
-            $chart2PerMonth = new ChartsHC;
+            $chart2PerMonth = new Charts;
             $chart2PerMonth->labels(array_values(self::MONTHS));
             $chart2PerMonth->dataset('Somme du temps passé par mois (heures)', 'bar', array_values($valPerMonth));
 
             // Create the second chart for Mobile format
-            $chart2PerCategory = new ChartsHC;
+            $chart2PerCategory = new Charts;
             $chart2PerCategory->labels(array_values($typesNames));
             // First dataset
-            $chart2PerCategory->dataset('Nombre de d\'entretiens passés par catégorie', 'bar', array_values($nbrPerCat))
-                            ->color('rgb(255, 0, 0)');
+            $chart2PerCategory->dataset('Nombre de d\'entretiens passés par catégorie', 'bar', array_values($nbrPerCat))->color('rgb(255, 0, 0)');
             // Second dataset
-            $chart2PerCategory->dataset('Somme du temps passé par catégorie (heures)', 'line', array_values($this->formatToHoursMinutes($valPerCat)))
-                            ->color('rgba(0, 0, 250, 1)');
+            $chart2PerCategory->dataset('Somme du temps passé par catégorie (heures)', 'line', array_values($this->formatToHoursMinutes($valPerCat)))->color('rgba(0, 0, 250, 1)');
 
             // Push all the charts into $charts
             array_push($charts, $chart1PerMonth, $chart1PerCategory, $chart2PerMonth, $chart2PerCategory);

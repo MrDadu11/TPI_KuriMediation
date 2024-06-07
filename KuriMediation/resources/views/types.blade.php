@@ -12,6 +12,9 @@
     <x-app-layout>
             <div class="shadow-xl shadow-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
                 <div class="p-3 md:p-6">
+                    <a href="{{ route('meeting.index') }}" class="text-blue-800 font-extrabold text-xl hover:text-black transition ease-in-out duration-300 underline">
+                        Retour
+                    </a>
                     <section>
                         <div class="flex flex-col items-center p-4 mt-5">
                             {{-- Displays the error if there are --}}

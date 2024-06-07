@@ -13,6 +13,9 @@
 <body>
     <x-app-layout>
         <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
+            <a href="{{ route('meeting.index') }}" class="text-blue-800 font-extrabold text-xl hover:text-black transition ease-in-out duration-300 underline">
+                Retour
+            </a>
             <livewire:pages.meetings.edit-meeting-form 
             :currentMeeting="$currentMeeting" 
             :types="$types"
