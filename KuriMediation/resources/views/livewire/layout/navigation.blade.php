@@ -23,7 +23,7 @@ new class extends Component
 
 <nav x-data="{ open: false }" class="">
     <!-- Primary Navigation Menu -->
-    <div class="bg-white border-b border-gray-100 md:shadow-lg md:border md:mt-2 max-w-screen xl:max-w-7xl mx-auto px-4 py-4 md:px-6 xl:px-8 rounded-xl">
+    <div class="bg-gray-100 border-b border-gray-300 md:shadow-2xl md:border md:mt-2 max-w-screen xl:max-w-7xl mx-auto px-4 py-4 md:px-6 xl:px-8 rounded-xl">
         <div class="pt-2 px-2 inline-flex w-full justify-between items-center">            
             <div class="md:flex">
                 <!-- Logo -->
@@ -32,7 +32,6 @@ new class extends Component
                         <span class="text-3xl font-bold text-blue-800">KuriMediation</span>
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden md:my-px md:ms-10 md:flex bg-gray-100 xl:shadow-md">
                     <x-nav-link class="rounded-ss-lg rounded-es-lg" :href="route('meeting.index')" :active="request()->routeIs('meeting.index')" wire:navigate>

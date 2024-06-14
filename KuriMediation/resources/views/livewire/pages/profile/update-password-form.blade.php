@@ -38,7 +38,7 @@ new class extends Component
     }
 }; ?>
 
-<section>
+<section class="space-y-6 px-9 py-4 border border-gray-300 bg-gray-100">
     <header>
         <h2 class="text-lg font-medium text-gray-900 ">
             {{ __('Update Password') }}

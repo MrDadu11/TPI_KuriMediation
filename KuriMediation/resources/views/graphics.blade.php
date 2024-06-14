@@ -10,42 +10,58 @@
     <header class="print hidden">
         <div class="flex justify-between text-xs">
             <div>ETML-Médiateur</div>
+            <div class="font-bold">{{ $currentYear }}</div>
             <div><?php echo $currentUser->firstname . " " . $currentUser->lastname ?></div>
         </div>
     </header>
     <x-app-layout>
-        <div class="bg-white shadow-lt border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
-            <div class="p-3 sm:p-6">
+        <div class="bg-gray-100 shadow-lt border border-gray-300 md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
+            <div class="p-3 sm:p-6 flex flex-col md:space-y-2">
                 @if ($charts !== null)
-                    <div class="bg-white inline-flex border rounded-md hover:border-transparent">
-                        {{-- Selector for the year --}}
-                        <select onchange="location = this.value;" class="rounded-lg border-gray-300 shadow-md">
-                            @foreach ($years as $year)
-                                <option value="{{ route('graphic.index', $year->year) }}" {{ $currentYear == $year->year ? 'selected' : '' }}>
-                                    {{ $year->year }}
-                                </option>
-                            @endforeach
-                        </select>
+                <div class="bg-white inline-flex border rounded-md hover:border-transparent print-hide">
+                    {{-- Selector for the year --}}
+                    <select onchange="location = this.value;" class="rounded-lg border-gray-300 shadow-md">
+                        @foreach ($years as $year)
+                        <option value="{{ route('graphic.index', $year->year) }}" {{ $currentYear == $year->year ? 'selected' : '' }}>
+                            {{ $year->year }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                {{-- Meetings Stats --}}
+                <div class="flex flex-col xl:flex-row justify-between space-y-2 xl:space-y-0 print-stats">
+                    <div class="p-5 md:p-5 xl:mr-4 bg-gray-200 border border-gray-400 border-opacity-65 shadow-xl rounded-md w-full">
+                        <h1 class="font-bold text-base md:text-xl text-blue-800">Nombre d'entretiens au total</h1>
+                        <span class="font-semibold text-xl md:text-5xl">{{ $meetingsTotal }}</span>
                     </div>
-                    <section class="space-y-3">
+                    <div class="p-5 md:p-5 xl:mx-4 bg-gray-200 border border-gray-400 border-opacity-65 shadow-xl rounded-md w-full">
+                        <h1 class="font-bold text-lbasemd:text-xl text-blue-800">Temps passés durant l'année</h1>
+                        <span class="font-semibold text-xl md:text-5xl">{{ $timeSpent }}</span>
+                    </div>
+                    <div class="p-5 md:p-5 xl:ml-4 bg-gray-200 border border-gray-400 border-opacity-65 shadow-xl rounded-md w-full">
+                        <h1 class="font-bold text-base md:text-xl text-blue-800">Moyenne par entretien et ses suivis.</h1>
+                        <span class="font-semibold text-xl md:text-5xl">{{ $avgTimeSpent }}</span>
+                    </div>
+                </div>
+                    <section class="space-y-1 md:space-y-3">
                         @if ($chart1PerMonth != null)
-                        <div class="border border-gray-300 shadow-lg rounded-md p-1 xl:p-8 print hidden md:block">
+                        <div class="border border-gray-400 border-opacity-65 rounded-md p-0 xl:p-8 print-chart hidden md:block md:w-full">
                             {!! $chart1PerMonth->container() !!}                            
                         </div>
                         @endif
                         @if ($chart1PerCategory != null)
-                        <div class="border border-gray-300 shadow-lg rounded-md p-1 xl:p-8 print hidden md:block">
+                        <div class="border border-gray-400 border-opacity-65 rounded-md pt-2 pb-0 xl:p-8 print-chart hidden md:block md:w-full">
                             {!! $chart1PerCategory->container() !!}                            
                         </div>
                         @endif
                         {{-- Displays for mobile --}}
                         @if ($chart2PerMonth != null)
-                        <div class="border border-gray-300 shadow-lg rounded-md p-1 xl:p-8 print-hide md:hidden">
+                        <div class="border border-gray-300 shadow-xl rounded-md xl:p-8 print-hide md:hidden">
                             {!! $chart2PerMonth->container() !!}                            
                         </div>
                         @endif
                         @if ($chart2PerCategory != null)
-                        <div class="border border-gray-300 shadow-lg rounded-md p-1 xl:p-8 print-hide md:hidden">
+                        <div class="border border-gray-300 shadow-xl rounded-md xl:p-8 print-hide md:hidden">
                             {!! $chart2PerCategory->container() !!}                            
                         </div>
                         @endif
@@ -91,10 +107,10 @@
         window.print();
         // After printing, resize charts back
         }, 500);
-        setTimeout(() => {
-        // After printing, resize charts back
-        resizeChartsBack();
-        }, 500);
+        // setTimeout(() => {
+        // // After printing, resize charts back
+        // resizeChartsBack();
+        // }, 500);
 
     }
 
@@ -104,8 +120,8 @@
         chart1PerMonth = Highcharts.charts[0];
         chart1PerCategory = Highcharts.charts[1];
         // Set the size
-        chart1PerMonth.setSize(600, 400);
-        chart1PerCategory.setSize(600, 400);
+        chart1PerMonth.setSize(600, 370);
+        chart1PerCategory.setSize(600, 370);
     }
 
     // Function to resize charts back
@@ -129,8 +145,19 @@
             .print-hide {
                 display: none;
             }
+            .print-chart {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
             nav{
                 display: none;
+            }
+            .print-stats{
+                display: flex;
+                flex-direction: row;
             }
         }
     </style>
