@@ -10,7 +10,7 @@
 </head>
 <body>
     <x-app-layout>
-        <div class="shadow-2xl bg-gray-200 border-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
+        <div class="shadow-2xl bg-white border-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
             <div class="p-3 md:p-6">
                     <section>
                         <div class="flex flex-col items-center p-4 mt-5">
