@@ -92,20 +92,23 @@ class GraphicController extends Controller
             // Charts array that will contains all arrays
             $charts = [];
 
+
             // Create the first chart
             $chart1PerMonth = new Charts;
             $chart1PerMonth->labels(array_values(self::MONTHS));
             $chart1PerMonth->dataset('Somme du temps passé par mois (heures)','column',array_values($this->formatToHoursMinutes($valPerMonth)));
+            $chart1PerMonth->height(380);
             
             // Create the second chart
             $chart1PerCategory = new Charts;
             $chart1PerCategory->labels(array_values($typesNames));
             // First dataset 
             $chart1PerCategory->dataset('Nombre de d\'entretiens passés par catégorie', 'column', array_values($nbrPerCat))->color('rgb(255, 0, 0)');
-
             // Second dataset
             $chart1PerCategory->dataset('Somme du temps passé par catégorie (heures)', 'line', array_values($this->formatToHoursMinutes($valPerCat)))->color('rgba(0, 0, 250, 1)');
+            $chart1PerCategory->height(380);
 
+            
             // Create the first chart for Mobile format
             $chart2PerMonth = new Charts;
             $chart2PerMonth->labels(array_values(self::MONTHS));
@@ -134,6 +137,10 @@ class GraphicController extends Controller
                 'chart1PerCategory' => $chart1PerCategory,
                 'chart2PerMonth' => $chart2PerMonth,
                 'chart2PerCategory' => $chart2PerCategory,
+                'meetingsTotal' => $this->countUserAllMeetings($year), // Get the total of meetings the user has
+                'userMeetings' => $this->getUserAllMeetings($year),
+                'timeSpent' => $this->formatToHoursMins($this->countUserTimeSpent($year)),
+                'avgTimeSpent' => $this->getAvgTimeSpent($this->countUserAllMeetings($year), $this->countUserTimeSpent($year)),
             ]);
         }        
         // If $year is not assigned, the earliest year from the DB will be assigned to $year and then redirected to the page
@@ -173,6 +180,80 @@ class GraphicController extends Controller
             $newValArray[$index] = $hours + $minutes; // Put the value inside the array
         }
         return $newValArray;    // returns the array
+    }
+        /**
+     * Function that returns the total amount of meetings the user has for the chosen year
+     *  */ 
+    public function countUserAllMeetings($year){
+        $total = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
+        return $total->count();
+    }
+
+    /**
+     *   Function that returns the total amount of time spent for meetings and its aftercares
+     *   for the user based on the chosen year
+     **/
+    public function countUserTimeSpent($year){
+        $total = 0; // Define the total
+        $meetings = Meeting::where('user_id', Auth::id()) // Get all meetings by the year
+                            ->whereYear('schedule', $year)
+                            ->get(); 
+        // Sum the values into $total
+        foreach($meetings as $meeting){
+            $total += $meeting->duration;
+            $aftercares = Aftercare::where('meeting_id', $meeting->id)->get();
+            foreach($aftercares as $aftercare){
+                $total += $aftercare->duration;
+            }
+        }
+        return $total;
+    }
+
+    /**
+     *  Function that calcultates the number of meetings upcoming based on the current date
+     *  */ 
+    public function countUpcomingMeetings($year){
+        $meetings = Meeting::where('user_id', Auth::id())->whereYear('schedule', $year)->get();
+        $count = 0;
+        foreach($meetings as $meeting){
+            if($meeting->schedule > today()){
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * Function that calculates the average time spent on meetings and its aftercares in a year
+     */
+    public function getAvgTimeSpent($totalMeeting, $timeSpentYear){
+
+        $AvgTimeSpent = $timeSpentYear / $totalMeeting;
+        return $this->formatToHoursMins($AvgTimeSpent);
+    }
+
+    /** Function that retrieves all meetings the user has for the chosen year.
+     *  returns an array sorted by months
+     **/ 
+    public function getUserAllMeetings($year){
+        // Gets all user meetings based on the year
+        for($i = 0; $i < 12; $i++){
+            $userMeetings[$i] = Meeting::where('user_id', Auth::id())
+            ->whereYear('schedule', $year)
+            ->whereMonth('schedule', $i+1)
+            ->get();
+        }
+        return $userMeetings;
+    }
+
+    /**
+     * Format a number to hours and minutes
+     */
+    public function formatToHoursMins($total){
+        $hours = floor($total / 60); // Get the hour leaving the minutes
+        $minutes = $total % 60; // Get the minutes from the hours
+        
+        return sprintf('%02dh%02dmin', $hours, $minutes);
     }
     
     

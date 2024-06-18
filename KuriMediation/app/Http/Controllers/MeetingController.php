@@ -301,6 +301,9 @@ class MeetingController extends Controller
         return $userMeetings;
     }
 
+    /**
+     * Format a number to hours and minutes
+     */
     public function formatToHoursMins($total){
         $hours = floor($total / 60); // Get the hour leaving the minutes
         $minutes = $total % 60; // Get the minutes from the hours

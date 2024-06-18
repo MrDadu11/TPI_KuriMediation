@@ -25,14 +25,6 @@ class DatabaseSeeder extends Seeder
             'password' => 'ETML1234',
             'isAdmin' => true,
         ]);
-        User::factory()->create([
-            'username' => 'user1',
-            'firstname' => 'user1',
-            'lastname' => 'user1',
-            'email' => 'user1@user.com',
-            'password' => 'ETML1234',
-            'isAdmin' => false,
-        ]);
 
         // Creates the list of basic categories
         foreach(self::TYPES as $type){

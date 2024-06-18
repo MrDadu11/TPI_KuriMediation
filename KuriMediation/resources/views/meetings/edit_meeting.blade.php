@@ -12,8 +12,8 @@
 </head>
 <body>
     <x-app-layout>
-        <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-6 rounded-xl">
-            <a href="{{ route('meeting.index') }}" class="text-blue-800 font-extrabold text-xl hover:text-black transition ease-in-out duration-300 underline">
+        <div class="bg-white border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-10 xl:py-8 rounded-xl shadow-2xl">
+            <a href="{{ route('meeting.index') }}" class="bg-blue-800 text-white border px-3 py-2 rounded-lg font-extrabold text-lg hover:bg-blue-600 transition ease-in-out duration-300">
                 Retour
             </a>
             <livewire:pages.meetings.edit-meeting-form 

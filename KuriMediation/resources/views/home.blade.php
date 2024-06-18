@@ -31,11 +31,11 @@
                                 <span class="font-semibold text-5xl">{{ $meetingsTotal }}</span>
                             </div>
                             <div class="p-5 xl:mx-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
-                                <h1 class="font-bold text-xl text-blue-800">Temps passés durant l'année</h1>
+                                <h1 class="font-bold text-xl text-blue-800">Heures passés durant l'année</h1>
                                 <span class="font-semibold text-5xl">{{ $timeSpent }}</span>
                             </div>
                             <div class="p-5 xl:ml-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
-                                <h1 class="font-bold text-xl text-blue-800">Moyenne par entretien et ses suivis.</h1>
+                                <h1 class="font-bold text-xl text-blue-800">Moyenne d'heures par entretien</h1>
                                 <span class="font-semibold text-5xl">{{ $avgTimeSpent }}</span>
                             </div>
                         </div>
@@ -64,7 +64,9 @@
                                             <option value="orderByAlphabeticReverse">Z-A</option>
                                         </select>
                                     </div>
-                                    <livewire:pages.meetings.create-meeting-form/>
+                                    <livewire:pages.meetings.create-meeting-form
+                                    :types="$types"
+                                    />
                                 </div>
                             </div>
                             <div class="md:max-h-96 overflow-auto  rounded-md p-1">

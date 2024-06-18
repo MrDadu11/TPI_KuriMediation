@@ -8,18 +8,19 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
+    public $types;
+    
+    public function mount(){
+        $this->types = Type::all();
+    }
 
     public $showForm = false;
-    public $types;
-
+    
     public function toggleForm()
     {
         $this->showForm = !$this->showForm;
     }
 
-    public function mount(){
-        $this->types = Type::all();
-    }
 }; ?>
 <div>
     {{-- Button that toggles the visibility of the form --}}
@@ -27,7 +28,7 @@ new class extends Component
         +
     </button>
     @if ($showForm)
-    {{-- Background color --}}
+    {{-- Form --}}
     <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
         <section class="px-16 py-12 md:py-16 md:px-20 bg-white rounded-lg border shadow-lg min-w-full xl:min-w-0 xl:max-w-7xl min-h-screen xl:min-h-0 max-h-screen overflow-auto">
             <button wire:click="toggleForm" class="text-blue-800 font-extrabold text-lg hover:text-black transition ease-in-out duration-300 mb-2 underline">

@@ -55,7 +55,7 @@
                         <x-input-error class="mt-2" :messages="$errors->get('duration')" />
                         </div>
                     <div class="flex justify-center items-center mt-2 xl:mb-2 xl:mt-0 xl:items-end xl:justify-end xl:w-1/2">
-                        <button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white h-10 items-center">Sauvegarder</button>
+                        <button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white hover:bg-blue-600 h-10 items-center transition ease-in-out duration-150">Sauvegarder</button>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                 @error('document')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
-                <li><button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white h-10 items-center mt-2">Ajouter un PDF</button></li>
+                <li><button type="submit" class="rounded-lg px-3 py-1 bg-blue-800 text-white hover:bg-blue-600 h-10 items-center mt-2 transition ease-in-out duration-150">Ajouter un PDF</button></li>
             </ul>
         </form>
     </div>
