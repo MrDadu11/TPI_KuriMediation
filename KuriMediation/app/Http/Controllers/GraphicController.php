@@ -98,6 +98,8 @@ class GraphicController extends Controller
             $chart1PerMonth->labels(array_values(self::MONTHS));
             $chart1PerMonth->dataset('Somme du temps passé par mois (heures)','column',array_values($this->formatToHoursMinutes($valPerMonth)));
             $chart1PerMonth->height(380);
+            $chart1PerMonth->displayAxes(true);
+            $chart1PerMonth->labelsRotation(-25);
             
             // Create the second chart
             $chart1PerCategory = new Charts;
@@ -181,7 +183,8 @@ class GraphicController extends Controller
         }
         return $newValArray;    // returns the array
     }
-        /**
+
+    /**
      * Function that returns the total amount of meetings the user has for the chosen year
      *  */ 
     public function countUserAllMeetings($year){

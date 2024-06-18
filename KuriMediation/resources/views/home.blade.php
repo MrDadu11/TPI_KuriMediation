@@ -11,7 +11,7 @@
 </head>
 <body>
     <x-app-layout>
-            <div class="shadow-xl shadow-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
+            <div class="shadow-2xl bg-gray-200 border-gray-300 border md:mt-10 max-w-full md:max-w-7xl mx-auto px-4 py-2 md:px-5 xl:px-7 rounded-xl">
                 <div class="p-3 md:p-6">
                     <section>
                         <div class="flex mb-2">
@@ -26,7 +26,7 @@
                         </div>
                         {{-- Meetings Stats --}}
                         <div class="flex flex-col xl:flex-row justify-between space-y-2 xl:space-y-0">
-                            <div class="p-5 xl:mr-4 bg-white border border-gray-300 shadow-lg rounded-md w-full">
+                            <div class="p-5 xl:mr-4 bg-gray-200 border border-gray-300 shadow-lg rounded-md w-full">
                                 <h1 class="font-bold text-xl text-blue-800">Nombre d'entretiens au total</h1>
                                 <span class="font-semibold text-5xl">{{ $meetingsTotal }}</span>
                             </div>
@@ -48,7 +48,7 @@
                         </div>
 
                         {{-- Meetings list with a search bar, a sorter, and a button for adding a new meeting --}}
-                        <div class="flex flex-col p-4 mt-5 bg-white border border-gray-300 shadow-lg rounded-md">
+                        <div class="flex flex-col p-4 mt-5 bg-gray-200 border border-gray-300 shadow-lg rounded-md">
                             <div class="flex justify-between border-b pb-2 border-black">
                                 <span class="flex items-center font-bold text-lg text-blue-800">Entretiens</span>
                                 <div class="inline-flex">

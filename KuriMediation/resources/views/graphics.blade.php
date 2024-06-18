@@ -144,8 +144,19 @@
             .print-hide {
                 display: none;
             }
+            .print-chart {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
             nav{
                 display: none;
+            }
+            .print-stats{
+                display: flex;
+                flex-direction: row;
             }
         }
     </style>
