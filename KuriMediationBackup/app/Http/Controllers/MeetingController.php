@@ -56,7 +56,6 @@ class MeetingController extends Controller
                 'months' => self::MONTHS,
                 'currentYear' => $year,
             ]);
-            
 
         }
         // If $year is not assigned, the earliest year from the DB will be assigned to $year and then redirected to the page

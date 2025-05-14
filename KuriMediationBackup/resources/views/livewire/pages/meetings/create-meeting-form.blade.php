@@ -8,13 +8,13 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
-    public $types = [];
-
-    public $showForm = false;
-
+    public $types;
+    
     public function mount(){
         $this->types = Type::all();
     }
+
+    public $showForm = false;
     
     public function toggleForm()
     {
@@ -49,7 +49,7 @@ new class extends Component
             <div class="flex flex-col">
                 <x-input-label for="type_id" :value="__('Type d\'intervention')" />
                 <select name="type_id" id="type_id" class="rounded-lg border border-gray-300">
-                    @foreach ($types as $type)
+                    @foreach ($this->types as $type)
                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
                 </select>

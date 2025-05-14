@@ -64,17 +64,51 @@
                                             <option value="orderByAlphabeticReverse">Z-A</option>
                                         </select>
                                     </div>
-                                    <livewire:pages.meetings.create-meeting-form/>
+                                    <livewire:pages.meetings.create-meeting-form
+                                    :types="$types"
+                                    />
                                 </div>
                             </div>
-                            @if ()
-                            <livewire:pages.meetings.list-meeting-date
-                            :months="$months"
-                            :userMeetings="$userMeetings"
-                            :types="$types"
-                            />
-                            @endif
-
+                            <div class="md:max-h-96 overflow-auto  rounded-md p-1">
+                                {{-- Checks if the users has meetings or not --}}
+                                @if ($userMeetings !== 0)
+                                    @for ($i = 0; $i < 12; $i++)
+                                    <ul>
+                                        <li class="px-2 py-2 border-b shadow-sm rounded-lg border-gray-300 font-extrabold"><?=$months[$i]?></li>
+                                        @foreach ($userMeetings[$i] as $meeting)
+                                        <li class="flex justify-between px-4 py-2 border-b rounded-sm text-gray-500">
+                                            <div class="flex flex-col md:block md:space-x-8">
+                                                <span>Nom: {{ $meeting->name }}</span>
+                                                <span>Intervenants: {{ $meeting->visitor }}</span>
+                                                <span>Description: {{ $meeting->description }}</span>
+                                                @foreach ($types as $type)
+                                                    @if ($type->id == $meeting->type_id)
+                                                        <span>Type: {{ $type->name }}</span>   
+                                                    @endif                                                    
+                                                @endforeach
+                                                <span>Date: {{ \Carbon\Carbon::parse($meeting->schedule)->format('d.m.Y') }}</span>
+                                                {{-- If the duration and the decision are not set --}}
+                                                @if ($meeting->duration == 0)
+                                                    <span class="text-red-500">Manque d'informations</span>
+                                                @endif
+                                            </div>
+                                            <div class="flex space-x-2 items-center">
+                                                <span><a href="{{ route('meeting.show', $meeting->id) }}"><i class="fa fa-info-circle fa-lg" ></i></a></span>
+                                                <span><a href="{{ route('meeting.edit', $meeting->id) }}"><i class="fa fa-edit fa-lg" ></i></a></span>
+                                                <span>
+                                                    <a href="{{ route('meeting.destroy', $meeting->id) }}"onclick="return confirm('Voulez-vous supprimer cet entretien?');">
+                                                        <i class="fa fa-trash fa-lg"></i>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </li>
+                                        @endforeach                            
+                                    </ul>
+                                    @endfor
+                                @else
+                                    <li class="px-2 py-2 border-b rounded-sm">Aucune donnée</li>
+                                @endif
+                            </div>
                         </div>
                     </section>
                 </div>
